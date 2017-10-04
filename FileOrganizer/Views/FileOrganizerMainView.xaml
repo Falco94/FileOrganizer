@@ -1,0 +1,84 @@
+﻿<view:BaseMahappsWindow x:Class="FileOrganizer.View.FileOrganizerMainView"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:controller="clr-namespace:FileOrganizer.Controller"
+                      xmlns:converter="clr-namespace:Runtime.Converters;assembly=Runtime"
+                      xmlns:view="clr-namespace:FileOrganizer.MVC"
+                      xmlns:views="clr-namespace:FileOrganizer.Views"
+                      Title="FileOrganizer"
+                      Height="860"
+                      Width="1024"
+                      BorderBrush="{DynamicResource AccentColorBrush}"
+                      BorderThickness="1"
+                      WindowStartupLocation="CenterScreen">
+
+    <view:BaseMahappsWindow.Resources>
+
+    </view:BaseMahappsWindow.Resources>
+
+    <Grid Name="MainGrid">
+    
+    <TabControl>
+        <TabItem Header="Hauptseite">
+            <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+
+        <ItemsControl Grid.Row="0" Margin="50,50,50,50" ItemsSource="{Binding MappingItems}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding IsActive}" IsEnabled="False"/>
+                        <TextBlock Text="{Binding Extension}" Width="200"/>
+                        <TextBlock Text="{Binding TargetPath}" Width="200"/>
+                        <Button Width="200" Command="{x:Static controller:FileOrganizerMainViewController.CopyFilesToDestinationCommand}">
+                            <TextBlock Text="Umsortieren"/>
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+                <Border Background="Green" Opacity="0.2" Drop="UIElement_OnDrop" AllowDrop="True" Grid.Row="2"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock Margin="10,0,10,0" 
+                       Text="Ziehen Sie einen Ordner in diesen Bereich, um ihn gemäß Ihrer Zuordnungen aufzuräumen." 
+                       FontSize="20" TextWrapping="Wrap"/>
+                </Border>
+
+                <!--<StackPanel Grid.Row="1" Margin="0,50,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBox Text="{Binding SelectedExtension, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{x:Static controller:FileOrganizerMainViewController.AddExtensionCommand}" Key="Return" />
+                            <KeyBinding Command="{x:Static controller:FileOrganizerMainViewController.AddExtensionCommand}" Key="Enter" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Button Command="{x:Static controller:FileOrganizerMainViewController.SaveExtensionsCommand}">
+                        <TextBlock Text="Extensions speichern"/>
+                    </Button>
+                    <ItemsControl ItemsSource="{Binding Extensions}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>-->
+            </Grid>
+
+        </TabItem>
+        <TabItem Header="Extensions">
+            <views:AddNewExtensionsView />
+        </TabItem>
+        <TabItem Header="Zuordnungen">
+            <views:AddExtensionAssignementView />
+        </TabItem>
+        <TabItem Header="Ordnerüberwachung">
+            <views:AddFileWatcherView />
+        </TabItem>
+    </TabControl>
+    </Grid>
+</view:BaseMahappsWindow>

@@ -1,0 +1,67 @@
+﻿<controls:MetroWindow  x:Class="FileOrganizer.View.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                       xmlns:converter="clr-namespace:Runtime.Converters;assembly=Runtime"
+                      Title="FileOrganizer"
+                      Height="860"
+                      Width="1024"
+                      BorderThickness="1"
+                      WindowStartupLocation="CenterScreen">
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <converter:Bool2VisibilityConverter x:Key="Bool2VisibilityConverter"/>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        
+        <DockPanel Grid.Row="0">
+            <controls:Tile DockPanel.Dock="Left"
+                        Title="Extensions" 
+                        FontSize="8"
+                        TiltFactor="1"
+                        Width="180" Height="100" 
+                        Count="1" x:Name="Tile1" x:FieldModifier="public">
+            </controls:Tile>
+            <controls:Tile DockPanel.Dock="Left"
+                        Title="Extensiongroups" 
+                        TiltFactor="1"
+                        Width="180" Height="100" 
+                        Count="1" x:Name="Tile2" x:FieldModifier="public">
+            </controls:Tile>
+            <controls:Tile DockPanel.Dock="Left"
+                        Title="Ordnerüberwachung" 
+                        TiltFactor="1"
+                        Width="180" Height="100" 
+                        Count="1" x:Name="Tile3" x:FieldModifier="public">
+            </controls:Tile>
+            <controls:Tile DockPanel.Dock="Left"
+                        Title="Mapping" 
+                        TiltFactor="1"
+                        Width="180" Height="100" 
+                        Count="1" x:Name="TileExtensionMapping" x:FieldModifier="public"/>
+            <controls:Tile DockPanel.Dock="Left"
+                        Title="DropDown" 
+                        TiltFactor="1"
+                        Width="180" Height="100" 
+                        Count="1" x:Name="TileExtensionDrop" x:FieldModifier="public">
+            </controls:Tile>
+        </DockPanel>
+
+
+        <Grid Grid.Row="1" x:Name="MainContent" x:FieldModifier="public">
+            <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource Bool2VisibilityConverter}}" Panel.ZIndex="10">
+                <controls:ProgressRing IsActive="{Binding IsBusy}" Foreground="LimeGreen"/>
+            </Border>
+        </Grid>
+
+
+    </Grid>
+</controls:MetroWindow>

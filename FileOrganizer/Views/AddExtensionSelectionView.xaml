@@ -1,0 +1,81 @@
+﻿<view:BaseUserControl x:Class="FileOrganizer.Views.AddExtensionSelectionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:view="clr-namespace:Runtime.View;assembly=Runtime"
+             xmlns:controller="clr-namespace:FileOrganizer.Controller"
+             xmlns:local="clr-namespace:FileOrganizer.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Welche Extensions sollen hinzugefügt werden?" FontSize="18"/>
+
+        <ListView Grid.Row="1" ItemsSource="{Binding SelectionItems}">
+            <!--<ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding IsSelected}"/>
+                            <TextBlock Text="{Binding Extension}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>-->
+
+            <ListView.View>
+                <GridView AllowsColumnReorder="true" 
+                          ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+                    <GridViewColumn Width="220">
+                        <GridViewColumnHeader>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding SelectAll}"/>
+                                <TextBlock Text="Hinzufügen"></TextBlock>
+                            </StackPanel>
+                        </GridViewColumnHeader>
+
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+
+                    </GridViewColumn>
+                    <GridViewColumn Width="220">
+
+                        <GridViewColumnHeader>Extensions
+                            <GridViewColumnHeader.ContextMenu>
+                                <ContextMenu 
+                                        Name="LastNameCM">
+                                    <MenuItem Header="Ascending" />
+                                    <MenuItem Header="Descending" />
+                                </ContextMenu>
+                            </GridViewColumnHeader.ContextMenu>
+                        </GridViewColumnHeader>
+
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Extension}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+
+            </ListView.View>
+        </ListView>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <Button Margin="0,0,10,0" Command="{x:Static controller:AddExtensionSelectionViewController.SaveExtensionsCommand}">
+                <TextBlock Text="Hinzufügen"/>
+            </Button>
+            <Button Command="{x:Static controller:AddExtensionSelectionViewController.CloseExtensionSelectionViewCommand}">
+                <TextBlock Text="Abbrechen" />
+            </Button>
+        </StackPanel>
+
+    </Grid>
+</view:BaseUserControl>
