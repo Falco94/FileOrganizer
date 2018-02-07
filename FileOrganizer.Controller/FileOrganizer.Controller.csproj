@@ -97,6 +97,7 @@
   <ItemGroup>
     <Compile Include="DropExtension.cs" />
     <Compile Include="ExtensionGroups.cs" />
+    <Compile Include="ExtensionGroupsExtensionAssignement.cs" />
     <Compile Include="ExtensionMapping.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Filewatcher.cs" />

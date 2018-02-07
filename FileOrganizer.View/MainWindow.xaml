@@ -20,38 +20,36 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-
-        
         <DockPanel Grid.Row="0">
             <controls:Tile DockPanel.Dock="Left"
                         Title="Extensions" 
                         FontSize="8"
                         TiltFactor="1"
                         Width="180" Height="100" 
-                        Count="1" x:Name="Tile1" x:FieldModifier="public">
+                        Count="1" x:Name="ExtensionsTab" x:FieldModifier="public">
             </controls:Tile>
             <controls:Tile DockPanel.Dock="Left"
                         Title="Extensiongroups" 
                         TiltFactor="1"
                         Width="180" Height="100" 
-                        Count="1" x:Name="Tile2" x:FieldModifier="public">
+                        Count="2" x:Name="ExtensiongroupsTab" x:FieldModifier="public">
             </controls:Tile>
             <controls:Tile DockPanel.Dock="Left"
                         Title="Ordnerüberwachung" 
                         TiltFactor="1"
                         Width="180" Height="100" 
-                        Count="1" x:Name="Tile3" x:FieldModifier="public">
+                        Count="3" x:Name="FolderobservationTab" x:FieldModifier="public">
             </controls:Tile>
             <controls:Tile DockPanel.Dock="Left"
                         Title="Mapping" 
                         TiltFactor="1"
                         Width="180" Height="100" 
-                        Count="1" x:Name="TileExtensionMapping" x:FieldModifier="public"/>
+                        Count="4" x:Name="MappingTab" x:FieldModifier="public"/>
             <controls:Tile DockPanel.Dock="Left"
                         Title="DropDown" 
                         TiltFactor="1"
                         Width="180" Height="100" 
-                        Count="1" x:Name="TileExtensionDrop" x:FieldModifier="public">
+                        Count="5" x:Name="DropDownTab" x:FieldModifier="public">
             </controls:Tile>
         </DockPanel>
 

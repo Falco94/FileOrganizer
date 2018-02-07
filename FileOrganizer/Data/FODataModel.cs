@@ -1,8 +1,8 @@
-﻿using FileOrganizer.Dto;
-using FileOrganizer.Models;
+﻿using FileOrganizer.Models;
 
 namespace FileOrganizer.Data
 {
+    using FileOrganizer.Dto;
     using System;
     using System.Data.Entity;
     using System.Linq;

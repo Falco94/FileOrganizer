@@ -151,6 +151,14 @@
     <Compile Include="Migrations\201705251510134_FileOrganizer.Data.FODataModel.Designer.cs">
       <DependentUpon>201705251510134_FileOrganizer.Data.FODataModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802062118276_ExtensionGroup.cs" />
+    <Compile Include="Migrations\201802062118276_ExtensionGroup.Designer.cs">
+      <DependentUpon>201802062118276_ExtensionGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802062127186_ExtensionGroups2.cs" />
+    <Compile Include="Migrations\201802062127186_ExtensionGroups2.Designer.cs">
+      <DependentUpon>201802062127186_ExtensionGroups2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Extension.cs" />
     <Compile Include="Models\ExtensionSelectionItem.cs" />
@@ -209,6 +217,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705251510134_FileOrganizer.Data.FODataModel.resx">
       <DependentUpon>201705251510134_FileOrganizer.Data.FODataModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802062118276_ExtensionGroup.resx">
+      <DependentUpon>201802062118276_ExtensionGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802062127186_ExtensionGroups2.resx">
+      <DependentUpon>201802062127186_ExtensionGroups2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

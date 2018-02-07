@@ -1,12 +1,6 @@
 ﻿using Runtime.MVC;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileOrganizer.Models
 {
@@ -14,20 +8,6 @@ namespace FileOrganizer.Models
     {
         private string _name;
         private ObservableCollection<Extension> _extensions = new ObservableCollection<Extension>();
-
-        public ObservableCollection<Extension> Extensions
-        {
-            get
-            {
-                return _extensions;
-            }
-
-            set
-            {
-                _extensions = value;
-                OnPropertyChanged(nameof(Extensions));
-            }
-        }
         
         [Key]
         public string Name
@@ -41,6 +21,24 @@ namespace FileOrganizer.Models
             {
                 _name = value;
                 OnPropertyChanged(nameof(Name));
+            }
+        }
+
+        public ObservableCollection<Extension> Extensions
+        {
+            get
+            {
+                if (_extensions == null)
+                {
+                    _extensions = new ObservableCollection<Extension>();
+                }
+                return _extensions;
+            }
+
+            set
+            {
+                _extensions = value;
+                OnPropertyChanged(nameof(Extensions));
             }
         }
     }

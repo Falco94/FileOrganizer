@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using BITS.UI.WPF.Core.Controllers;
+using FileOrganizer.Data;
 using FileOrganizer.Models;
 
 namespace FileOrganizer.Controller
@@ -36,6 +37,21 @@ namespace FileOrganizer.Controller
             _extensions = extensions;
         }
 
+        //Init without Extensions
+        public ExtensionGroups(BITS.UI.WPF.Core.Controllers.Controller parent,
+            IEnumerable<ExtensionGroup> extensionGroups) : base(parent)
+        {
+            parent.Exit();
+
+            _extensionGroups = extensionGroups;
+
+            using (var dataModel = new FODataModel())
+            {
+                _extensions = dataModel.Extensions.ToList();
+            }
+        }
+        
+
         protected override async Task OnSetupAsync()
         {
             await base.OnSetupAsync();
@@ -44,6 +60,63 @@ namespace FileOrganizer.Controller
             this.Model = new Model.ExtensionGroups(_extensionGroups, _extensions);
 
             this.Bind(SaveGroups, SaveExtensionGroups, CanSaveExtensionGroups);
+            this.Bind(AddNewAssignement, AddNewAssignementFn, CanAddNewAssignement);
+            this.Bind<ExtensionGroup>(ChooseExtensions, ChooseExtensionsFn, CanChooseExtensions);
+            
+        }
+
+        private async Task<bool> CanChooseExtensions(ExtensionGroup group)
+        {
+            return true;
+        }
+
+        private async Task ChooseExtensionsFn(ExtensionGroup group)
+        {
+            this.Model.IsBusy = true;
+            this.View.Test.Visibility = Visibility.Hidden;
+
+            IEnumerable<Extension> extensions = null;
+
+            await Task.Run(() =>
+            {
+                using (var dataModel = new FODataModel())
+                {
+                    extensions = dataModel.Extensions.ToList();
+
+                    var idList = group.Extensions.Select(y => y.Id);
+
+                    //exclude current group??
+                    var allUsedExtensions = _extensionGroups.SelectMany(x => x.Extensions.Select(y => y.Id));
+                    
+
+                    //in this group or in no other
+                    extensions = extensions.Where(x =>
+                        idList.Contains(x.Id) ||
+                        !allUsedExtensions.Contains(x.Id));
+                }
+
+            }).ContinueWith(async antecedent =>
+            {
+                this.Model.IsBusy = false;
+
+                await this.SwitchByAsync(region => region.MainContent,
+                    new Controller.ExtensionGroupsExtensionAssignement(this, group, extensions).Init());
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+
+            this.Model.IsBusy = false;
+        }
+
+        private async Task<bool> CanAddNewAssignement()
+        {
+            var canAdd = IsValid(this.View);
+
+            return canAdd;
+        }
+
+        private async Task AddNewAssignementFn()
+        {
+
+            this.Model.LoadedExtensionGroups.Add(new ExtensionGroup());
         }
 
         private async Task<bool> CanSaveExtensionGroups()

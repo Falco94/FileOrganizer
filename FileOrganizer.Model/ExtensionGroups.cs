@@ -15,6 +15,7 @@ namespace FileOrganizer.Model
     {
         private ObservableCollection<ExtensionGroup> _loadedExtensionGroups;
         private IEnumerable<Extension> _availableExtensions;
+        private bool _isBusy;
 
         public ExtensionGroups(IEnumerable<ExtensionGroup> extensionGroups, IEnumerable<Extension> extensions)
         {
@@ -50,6 +51,20 @@ namespace FileOrganizer.Model
             set
             {
                 _availableExtensions = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBusy
+        {
+            get
+            {
+                return _isBusy;
+            }
+
+            set
+            {
+                _isBusy = value;
                 OnPropertyChanged();
             }
         }

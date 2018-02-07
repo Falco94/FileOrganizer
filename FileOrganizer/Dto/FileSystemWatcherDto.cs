@@ -11,7 +11,7 @@ namespace FileOrganizer.Dto
         private string _path;
         private bool _active;
         private int _id;
-        
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id

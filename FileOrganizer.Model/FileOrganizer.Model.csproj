@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DropExtension.cs" />
+    <Compile Include="ExtensionGroupsExtensionAssignement.cs" />
     <Compile Include="ExtensionMapping.cs" />
     <Compile Include="Filewatcher.cs" />
     <Compile Include="ExtensionGroups.cs" />
