@@ -26,9 +26,9 @@ namespace FileOrganizer.Model
             Extensions = new ObservableCollection<GroupExtensionItem>(extensions.Select(x=> new GroupExtensionItem
             {
                 ExtensionName = x.ExtensionName,
-                Id = x.Id,
+                ExtensionId = x.ExtensionId,
                 // Ist die Extension bereits angewählt?
-               IsSelected = group.Extensions.Select(y=>y.Id).Contains(x.Id)
+               IsSelected = group.Extensions.Select(y=>y.ExtensionId).Contains(x.ExtensionId)
             }));
         }
 

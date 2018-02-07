@@ -11,22 +11,22 @@ namespace FileOrganizer.Models
 {
     public class Extension : DataModelBase
     {
-        private int _id;
+        private int _extensionId;
         private string _extensionName;
 
         [Key, Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id
+        public int ExtensionId
         {
             get
             {
-                return _id;
+                return _extensionId;
             }
 
             set
             {
-                _id = value;
-                OnPropertyChanged(nameof(Id));
+                _extensionId = value;
+                OnPropertyChanged(nameof(ExtensionId));
             }
         }
 

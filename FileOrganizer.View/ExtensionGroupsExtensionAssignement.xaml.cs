@@ -17,7 +17,7 @@ namespace FileOrganizer.View
 {
     public partial class ExtensionGroupsExtensionAssignement : UserControl
     {
-        public static readonly RoutedCommand CloseViewCommand = new RoutedCommand(nameof(CloseViewCommand), typeof(ExtensionGroupsExtensionAssignement));
+        public static readonly RoutedCommand CancelViewCommand = new RoutedCommand(nameof(CancelViewCommand), typeof(ExtensionGroupsExtensionAssignement));
         public static RoutedCommand DeleteAssignementCommand = new RoutedCommand(nameof(DeleteAssignementCommand), typeof(ExtensionGroupsExtensionAssignement));
         public static RoutedCommand ChooseExtensionsCommand = new RoutedCommand(nameof(ChooseExtensionsCommand), typeof(ExtensionGroupsExtensionAssignement));
         public static RoutedCommand SaveGroupCommand = new RoutedCommand(nameof(SaveGroupCommand), typeof(ExtensionGroupsExtensionAssignement));

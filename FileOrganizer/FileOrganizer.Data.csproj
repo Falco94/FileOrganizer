@@ -45,12 +45,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
@@ -143,21 +141,9 @@
     <Compile Include="Enums\MessageToken.cs" />
     <Compile Include="Enums\PathHelper.cs" />
     <Compile Include="Helper\DtoMapper.cs" />
-    <Compile Include="Migrations\201705091824118_InitialCreate.cs" />
-    <Compile Include="Migrations\201705091824118_InitialCreate.Designer.cs">
-      <DependentUpon>201705091824118_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201705251510134_FileOrganizer.Data.FODataModel.cs" />
-    <Compile Include="Migrations\201705251510134_FileOrganizer.Data.FODataModel.Designer.cs">
-      <DependentUpon>201705251510134_FileOrganizer.Data.FODataModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802062118276_ExtensionGroup.cs" />
-    <Compile Include="Migrations\201802062118276_ExtensionGroup.Designer.cs">
-      <DependentUpon>201802062118276_ExtensionGroup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802062127186_ExtensionGroups2.cs" />
-    <Compile Include="Migrations\201802062127186_ExtensionGroups2.Designer.cs">
-      <DependentUpon>201802062127186_ExtensionGroups2.cs</DependentUpon>
+    <Compile Include="Migrations\201802071906335_Initial.cs" />
+    <Compile Include="Migrations\201802071906335_Initial.Designer.cs">
+      <DependentUpon>201802071906335_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Extension.cs" />
@@ -212,17 +198,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Resource Include="Resources\Details-64.png" />
-    <EmbeddedResource Include="Migrations\201705091824118_InitialCreate.resx">
-      <DependentUpon>201705091824118_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705251510134_FileOrganizer.Data.FODataModel.resx">
-      <DependentUpon>201705251510134_FileOrganizer.Data.FODataModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802062118276_ExtensionGroup.resx">
-      <DependentUpon>201802062118276_ExtensionGroup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802062127186_ExtensionGroups2.resx">
-      <DependentUpon>201802062127186_ExtensionGroups2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201802071906335_Initial.resx">
+      <DependentUpon>201802071906335_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

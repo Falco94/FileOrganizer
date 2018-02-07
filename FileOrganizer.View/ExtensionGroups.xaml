@@ -18,7 +18,14 @@
 
     <Grid>
 
-        <Grid x:Name="Test" x:FieldModifier="public">
+
+
+        <Grid x:Name="MainContent" x:FieldModifier="public">
+
+            <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource Bool2VisibilityConverter}}" 
+                    BorderThickness="1000" 
+                    BorderBrush="#fa3232" Opacity="0.6" Panel.ZIndex="1">
+            </Border>
 
             <Grid>
                     <Grid.RowDefinitions>
@@ -127,13 +134,10 @@
         </Grid>
 
         <Grid x:Name="Busy" x:FieldModifier="public">
-            <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource Bool2VisibilityConverter}}" Panel.ZIndex="10">
+            <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource Bool2VisibilityConverter}}" 
+                    Panel.ZIndex="10">
                 <controls:ProgressRing IsActive="{Binding IsBusy}" Foreground="LimeGreen"/>
             </Border>
-        </Grid>
-
-        <Grid x:Name="MainContent" x:FieldModifier="public">
-
         </Grid>
     </Grid>
 </UserControl>

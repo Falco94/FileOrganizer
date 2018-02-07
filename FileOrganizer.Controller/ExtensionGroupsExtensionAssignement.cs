@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using BITS.UI.WPF.Core;
 using FileOrganizer.Data;
 using Runtime.Extensions;
 
@@ -15,7 +16,7 @@ namespace FileOrganizer.Controller
 {
     public class ExtensionGroupsExtensionAssignement : ContentController<Controller.ExtensionGroupsExtensionAssignement, View.ExtensionGroupsExtensionAssignement, Model.ExtensionGroupsExtensionAssignement>
     {
-        public static RoutedCommand CloseView => FileOrganizer.View.ExtensionGroupsExtensionAssignement.CloseViewCommand;
+        public static RoutedCommand CancelView => FileOrganizer.View.ExtensionGroupsExtensionAssignement.CancelViewCommand;
         public static RoutedCommand SaveGroup => FileOrganizer.View.ExtensionGroupsExtensionAssignement.SaveGroupCommand;
 
         private ExtensionGroup _extensionGroup;
@@ -36,8 +37,8 @@ namespace FileOrganizer.Controller
             this.View = new View.ExtensionGroupsExtensionAssignement();
             this.Model = new Model.ExtensionGroupsExtensionAssignement(_extensionGroup, _extensions);
 
-            this.Bind(CloseView, CloseViewFn, CanCloseView);
-            this.Bind(SaveGroup, SaveGroupFn, CanSaveGroup);
+            this.BindAsync(CancelView, CancelViewFn, CanCancelView);
+            this.BindAsync(SaveGroup, SaveGroupFn, CanSaveGroup);
         }
 
         private async Task<bool> CanSaveGroup()
@@ -51,29 +52,48 @@ namespace FileOrganizer.Controller
             _extensionGroup.Extensions = this.Model.Extensions.Where(x => x.IsSelected).Select(x => new Extension()
             {
                 ExtensionName = x.ExtensionName,
-                Id = x.Id
+                ExtensionId = x.ExtensionId
             }).ToObservableCollection();
 
             List<ExtensionGroup> groups = null;
 
             using (var model = new FODataModel())
             {
-                groups = model.ExtensionGroups.Where(x => x.Name != _extensionGroup.Name).ToList();
+                groups = model.ExtensionGroups.Where(x => x.ExtensionGroupId != _extensionGroup.ExtensionGroupId).ToList();
                 groups.Add(this.Model.Group);
             }
-
-            await this.SwitchByAsync(region => _parent.View.MainContent, new Controller.ExtensionGroups(_parent, groups).Init());
             
+            await this.SwitchByAsync(region => _parent.View.MainContent, new Controller.ExtensionGroups(_parent, groups).Init(),
+                (region, view) =>
+                {
+                    region.Children.Clear();
+                    region.Children.Add(view); }
+                , (region, view) => region.Children.Clear());
+
         }
 
-        private async Task<bool> CanCloseView()
+        private async Task<bool> CanCancelView()
         {
             return true;
         }
 
-        private async Task CloseViewFn()
+        //Alle Gruppen übergeben, aktuellen Bearbeitungsfortschritt ignorieren
+        private async Task CancelViewFn()
         {
-            _parent.View.Test.Visibility = Visibility.Visible;
+            List<ExtensionGroup> groups = null;
+
+            using (var model = new FODataModel())
+            {
+                groups = model.ExtensionGroups.ToList();
+            }
+
+            await this.SwitchByAsync(region => _parent.View.MainContent, new Controller.ExtensionGroups(_parent, groups).Init(),
+                (region, view) =>
+                {
+                    region.Children.Clear();
+                    region.Children.Add(view);
+                }
+                , (region, view) => region.Children.Clear());
         }
 
         public class Busy : IBusy

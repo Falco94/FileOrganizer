@@ -30,7 +30,7 @@ namespace FileOrganizer.Model
         private void SetAvailableExtensions()
         {
             _availableExtensions =
-                _availableExtensions?.Where(x => !_loadedExtensionGroups.Any(y => y.Extensions.Any(z => z.Id == x.Id)));
+                _availableExtensions?.Where(x => !_loadedExtensionGroups.Any(y => y.Extensions.Any(z => z.ExtensionId == x.ExtensionId)));
         }
 
         public ObservableCollection<ExtensionGroup> LoadedExtensionGroups

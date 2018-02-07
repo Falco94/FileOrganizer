@@ -23,11 +23,6 @@ namespace FileOrganizer.Controller
             
             this.View.Show();
 
-            this.ChannelIn<IBusy>().Subscribe(busy =>
-            {
-                this.Model.IsBusy = busy.IsBusy;
-            });
-
             this.View.ExtensionsTab.Click += (s, e) =>
             {
                 this.Model.IsBusy = true;
@@ -71,30 +66,30 @@ namespace FileOrganizer.Controller
                         extensions = dataModel.Extensions.ToList();
                         extensionGroups = dataModel.ExtensionGroups.ToList();
 
-                        // for test:
+                        //// for test:
 
-                        var testItem = new Models.ExtensionGroup
-                        {
-                            Name = "MeinTest1"
-                        };
+                        //var testItem = new Models.ExtensionGroup
+                        //{
+                        //    Name = "MeinTest1"
+                        //};
 
-                        testItem.Extensions.Add(extensions[0]);
-                        testItem.Extensions.Add(extensions[1]);
-                        testItem.Extensions.Add(extensions[2]);
+                        //testItem.Extensions.Add(extensions[0]);
+                        //testItem.Extensions.Add(extensions[1]);
+                        //testItem.Extensions.Add(extensions[2]);
 
-                        extensionGroups.Add(testItem);
+                        //extensionGroups.Add(testItem);
 
 
-                        var testItem2 = new Models.ExtensionGroup
-                        {
-                            Name = "MeinTest2"
-                        };
+                        //var testItem2 = new Models.ExtensionGroup
+                        //{
+                        //    Name = "MeinTest2"
+                        //};
 
-                        testItem2.Extensions.Add(extensions[3]);
-                        testItem2.Extensions.Add(extensions[4]);
-                        testItem2.Extensions.Add(extensions[5]);
+                        //testItem2.Extensions.Add(extensions[3]);
+                        //testItem2.Extensions.Add(extensions[4]);
+                        //testItem2.Extensions.Add(extensions[5]);
                         
-                        extensionGroups.Add(testItem2);
+                        //extensionGroups.Add(testItem2);
                     }
 
                 }).ContinueWith(async antecedent =>

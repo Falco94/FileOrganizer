@@ -63,14 +63,14 @@ namespace FileOrganizer.Controller
             //Filtert bereits gemappte Items aus den Listen
             foreach (var mapping in mappingItems)
             {
-                var extension = extensions.FirstOrDefault(x => x.Id == mapping.Extension.Id);
+                var extension = extensions.FirstOrDefault(x => x.ExtensionId == mapping.Extension.ExtensionId);
                 if (extension != null)
                 {
                     extensions.Remove(extension);
                 }
 
                 var extensionGroup =
-                    extensionGroups.FirstOrDefault(x => x.Extensions.Contains(y => y.Id == mapping.Extension.Id));
+                    extensionGroups.FirstOrDefault(x => x.Extensions.Contains(y => y.ExtensionId == mapping.Extension.ExtensionId));
 
                 if (extensionGroup != null)
                 {
@@ -81,10 +81,10 @@ namespace FileOrganizer.Controller
 
         private void SetupCommandBindings()
         {
-            this.Bind(AddNewAssignement, AddNewMapping, CanAddNewMapping);
-            this.Bind(SaveAssignements, SaveMappings, CanSaveMappings);
-            this.Bind<ExtensionMappingItem>(ChooseFolder, ChooseFolderDialog, CanChooseFolderDialog);
-            this.Bind<ExtensionMappingItem>(DeleteAssignement, DeleteMapping, CanDeleteMapping);
+            this.BindAsync(AddNewAssignement, AddNewMapping, CanAddNewMapping);
+            this.BindAsync(SaveAssignements, SaveMappings, CanSaveMappings);
+            this.BindAsync<ExtensionMappingItem>(ChooseFolder, ChooseFolderDialog, CanChooseFolderDialog);
+            this.BindAsync<ExtensionMappingItem>(DeleteAssignement, DeleteMapping, CanDeleteMapping);
         }
 
         private async Task<bool> CanAddNewMapping()
@@ -116,7 +116,7 @@ namespace FileOrganizer.Controller
 
                 foreach (var mappingItem in this.Model.MappingItems)
                 {
-                    var existingItem = mappingItems.FirstOrDefault(x => x.Id == mappingItem.Id);
+                    var existingItem = mappingItems.FirstOrDefault(x => x.ExtensionMappingItemId == mappingItem.ExtensionMappingItemId);
 
                     if (existingItem != null)
                     {

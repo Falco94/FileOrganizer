@@ -34,17 +34,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BITS.UI.WPF.Core, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BITS.UI.WPF.1.0.0\lib\net452\BITS.UI.WPF.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="BITS.Core, Version=1.2.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BITS.Core.1.2.8\lib\net451\BITS.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BITS.UI.WPF.Core, Version=1.8.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BITS.UI.WPF.1.8.9\lib\net452\BITS.UI.WPF.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BITS.Validation, Version=1.2.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BITS.Validation.1.2.8\lib\net452\BITS.Validation.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
@@ -56,6 +59,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="RefactorThis.GraphDiff, Version=3.0.1.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\RefactorThis.GraphDiff.3.0.1\lib\RefactorThis.GraphDiff.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -78,6 +84,9 @@
     <Reference Include="System.Reactive.Windows.Threading, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
@@ -113,6 +122,10 @@
     <ProjectReference Include="..\FileOrganizer.Model\FileOrganizer.Model.csproj">
       <Project>{fc2c06e7-31ab-4103-9998-789439602f3c}</Project>
       <Name>FileOrganizer.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileOrganizer.Service\FileOrganizer.Service.csproj">
+      <Project>{471A6EC4-BAF7-4A6A-A943-3E05D8AC5758}</Project>
+      <Name>FileOrganizer.Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\FileOrganizer.View\FileOrganizer.View.csproj">
       <Project>{F2A7CFB7-4E71-49B2-86DA-A219FA39DEDB}</Project>

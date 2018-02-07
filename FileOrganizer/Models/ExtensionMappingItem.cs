@@ -12,7 +12,7 @@ namespace FileOrganizer.Models
 {
     public class ExtensionMappingItem : DataModelBase
     {
-        private int _id;
+        private int _extensionMappingItemId;
         private string _extensionId;
         private string _targetPath;
         private bool _isActive;
@@ -23,17 +23,17 @@ namespace FileOrganizer.Models
         }
 
         [Key]
-        public int Id
+        public int ExtensionMappingItemId
         {
             get
             {
-                return _id;
+                return _extensionMappingItemId;
             }
 
             set
             {
-                _id = value;
-                OnPropertyChanged(nameof(Id));
+                _extensionMappingItemId = value;
+                OnPropertyChanged(nameof(ExtensionMappingItemId));
             }
         }
         

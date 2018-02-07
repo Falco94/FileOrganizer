@@ -1,6 +1,7 @@
 ﻿using Runtime.MVC;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FileOrganizer.Models
 {
@@ -8,8 +9,20 @@ namespace FileOrganizer.Models
     {
         private string _name;
         private ObservableCollection<Extension> _extensions = new ObservableCollection<Extension>();
+        private int _extensionGroupId;
+
+        [Key, Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ExtensionGroupId
+        {
+            get { return _extensionGroupId; }
+            set
+            {
+                _extensionGroupId = value; 
+                OnPropertyChanged();
+            }
+        }
         
-        [Key]
         public string Name
         {
             get
