@@ -11,7 +11,6 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using FileOrganizer.Data;
-using FileOrganizer.Dto;
 using FileOrganizer.Enums;
 using FileOrganizer.Helper;
 using FileOrganizer.Models;

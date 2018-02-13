@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using BITS.UI.WPF.Core;
 using FileOrganizer;
 using BITS.UI.WPF.Core.Controllers;
 using FileOrganizer.Data;
+using FileOrganizer.Helper;
 using FileOrganizer.Models;
 using Runtime.Extensions;
 
@@ -45,17 +47,17 @@ namespace FileOrganizer.Controller
 
         public async Task LoadData()
         {
-            using (var dataModel = new FODataModel())
-            {
-                var extensionMappings = dataModel.ExtensionMappingItems.ToList();
-                var extensions = dataModel.Extensions.ToList();
-                var extensionGroups = dataModel.ExtensionGroups.ToList();
+            var context = ContextManager.Context();
 
-                //TODO: Combobox Sources Filtern
-                //FilterExtensions(extensionMappings, extensions, extensionGroups);
+            var extensionMappings = context.ExtensionMappingItems.ToList();
+            var extensions = context.Extensions.ToList();
+            var extensionGroups = context.ExtensionGroups.ToList();
 
-                this.Model.Init(extensionMappings, extensions, extensionGroups);
-            }
+            //TODO: Combobox Sources Filtern
+            //FilterExtensions(extensionMappings, extensions, extensionGroups);
+
+            this.Model.Init(extensionMappings, extensions, extensionGroups);
+
         }
 
         private void FilterExtensions(IEnumerable<ExtensionMappingItem> mappingItems, IList<Models.Extension> extensions, IList<Models.ExtensionGroup> extensionGroups)
@@ -90,7 +92,7 @@ namespace FileOrganizer.Controller
         private async Task<bool> CanAddNewMapping()
         {
             return this.Model.MappingItems?.FirstOrDefault(
-                x => String.IsNullOrWhiteSpace(x.Extension?.ExtensionName)
+                x => (String.IsNullOrWhiteSpace(x.Extension?.ExtensionName) && String.IsNullOrWhiteSpace(x.ExtensionGroup?.Name))
                      || String.IsNullOrWhiteSpace(x.TargetPath)) == null;
         }
 
@@ -101,37 +103,33 @@ namespace FileOrganizer.Controller
 
         private async Task<bool> CanSaveMappings()
         {
+            //TODO: sinnvolles Mapping (keine doppelten gruppen, etc.)
+
+            if (!this.Model.MappingItems.Any())
+                return false;
+
             var item =
                 this.Model.MappingItems.FirstOrDefault(
-                    x => x.Extension == null || String.IsNullOrWhiteSpace(x.TargetPath));
+                    x => (x.Extension == null && x.ExtensionGroup == null) || String.IsNullOrWhiteSpace(x.TargetPath));
 
             return item == null && IsValid(this.View);
         }
 
         private async Task SaveMappings()
         {
-            using (var dataModel = new FODataModel())
+            var context = ContextManager.Context();
+
+            var mappingItems = context.ExtensionMappingItems.ToList();
+
+            foreach (var mappingItem in this.Model.MappingItems)
             {
-                var mappingItems = dataModel.ExtensionMappingItems.ToList();
-
-                foreach (var mappingItem in this.Model.MappingItems)
-                {
-                    var existingItem = mappingItems.FirstOrDefault(x => x.ExtensionMappingItemId == mappingItem.ExtensionMappingItemId);
-
-                    if (existingItem != null)
-                    {
-                        existingItem.Extension = mappingItem.Extension;
-                        existingItem.TargetPath = mappingItem.TargetPath;
-                        existingItem.IsActive = mappingItem.IsActive;
-                    }
-                    else
-                    {
-                        dataModel.ExtensionMappingItems.Add(mappingItem);
-                    }
-                }
-
-                dataModel.SaveChanges();
+                if (mappingItem.ExtensionMappingItemId == 0)
+                    context.Entry(mappingItem).State = EntityState.Added;
             }
+
+            context.SaveChanges();
+
+            ExtensionMappingManager.ReInit();
         }
 
         private async Task ChooseFolderDialog(ExtensionMappingItem item)
@@ -155,28 +153,19 @@ namespace FileOrganizer.Controller
             return true;
         }
 
-        private async Task DeleteMapping(ExtensionMappingItem item)
+        private async Task DeleteMapping(ExtensionMappingItem arg)
         {
-            using (var dataModel = new FODataModel())
+            var context = ContextManager.Context();
+
+            this.Model.MappingItems.Remove(arg);
+
+            if (arg.ExtensionMappingItemId != 0)
             {
-                if (item != null)
-                {
-                    this.Model.MappingItems.Remove(item);
-                    dataModel.ExtensionMappingItems.Remove(item);
-                    dataModel.SaveChanges();
-
-                    var validItemsToSave = this.Model.MappingItems.Where(x => x.IsActive);
-
-                    var extensionMappingItems = validItemsToSave as ExtensionMappingItem[] ??
-                                                validItemsToSave.ToArray();
-
-                    if (extensionMappingItems.Any())
-                    {
-                        //TODO:
-                        //dataModel.ExtensionMappingItems .SaveExtensionMappingItems(extensionMappingItems);
-                    }
-                }
+                context.Entry(arg).State = EntityState.Deleted;
+                context.SaveChanges();
             }
+
+            ExtensionMappingManager.ReInit();
         }
 
         private async Task<bool> CanDeleteMapping(ExtensionMappingItem item)

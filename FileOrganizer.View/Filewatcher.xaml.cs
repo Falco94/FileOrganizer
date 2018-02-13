@@ -15,11 +15,13 @@ using System.Windows.Shapes;
 
 namespace FileOrganizer.View
 {
-    /// <summary>
-    /// Interaktionslogik für Filewatcher.xaml
-    /// </summary>
     public partial class Filewatcher : UserControl
     {
+        public static readonly RoutedCommand AddNewAssignementCommand = new RoutedCommand(nameof(AddNewAssignementCommand), typeof(ExtensionMapping));
+        public static readonly RoutedCommand ChooseFolderCommand = new RoutedCommand(nameof(ChooseFolderCommand), typeof(ExtensionMapping));
+        public static readonly RoutedCommand SaveAssignementsCommand = new RoutedCommand(nameof(SaveAssignementsCommand), typeof(ExtensionMapping));
+        public static readonly RoutedCommand DeleteAssignementCommand = new RoutedCommand(nameof(DeleteAssignementCommand), typeof(ExtensionMapping));
+
         public Filewatcher()
         {
             InitializeComponent();

@@ -11,7 +11,7 @@ using FileOrganizer.Models;
 
 namespace FileOrganizer.Model
 {
-    public class ExtensionGroups : INotifyPropertyChanged
+    public class ExtensionGroups : INotifyPropertyChanged, IDataErrorInfo
     {
         private ObservableCollection<ExtensionGroup> _loadedExtensionGroups;
         private IEnumerable<Extension> _availableExtensions;
@@ -68,6 +68,56 @@ namespace FileOrganizer.Model
                 OnPropertyChanged();
             }
         }
+
+        public bool IsValid
+        {
+            get
+            {
+                foreach (var property in PropertyList)
+                {
+                    if (GetValidationError(property) != null)
+                        return false;
+                }
+
+                return true;
+            }
+        }
+
+        static readonly string[] PropertyList =
+        {
+            nameof(LoadedExtensionGroups)
+        };
+
+        string IDataErrorInfo.this[string propertyName]
+        {
+            get { return GetValidationError(propertyName); }
+        }
+
+        string GetValidationError(string propertyName)
+        {
+            string error = null;
+
+            switch (propertyName)
+            {
+                case nameof(LoadedExtensionGroups):
+                    error = ValidateLoadedExtensionGroups();
+                    break;
+            }
+
+            return error;
+        }
+
+        private string ValidateLoadedExtensionGroups()
+        {
+            if (this.LoadedExtensionGroups.FirstOrDefault(x => x.ExtensionGroupId == 0) != null)
+            {
+                return "Neu angelegte Gruppen müssen erst gespeichert werden!";
+            }
+            else
+                return null;
+        }
+
+        string IDataErrorInfo.Error { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

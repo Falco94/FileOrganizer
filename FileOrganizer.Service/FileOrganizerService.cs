@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FileOrganizer.Data;
-using FileOrganizer.Dto;
 using FileOrganizer.IService;
+using FileOrganizer.Models;
 
 namespace FileOrganizer.Service
 {

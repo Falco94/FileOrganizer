@@ -50,7 +50,7 @@
             <Label Grid.Column="2" Content="Zielpfad"/>
         </Grid>
         <ItemsControl Grid.Row="2" ItemsSource="{Binding Path=MappingItems}"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="ItemsControl">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Stretch">
@@ -66,11 +66,13 @@
                             <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                     AncestorType={x:Type UserControl}}, Path=DataContext.Extensions}"
                                       DisplayMemberPath="ExtensionName" 
-                                      VerticalAlignment="Center"   x:Name="ComboBoxExtensions" SelectedValue="{Binding Extension}"/>
+                                      VerticalAlignment="Center"   x:Name="ComboBoxExtensions" SelectedValue="{Binding Extension}"
+                                      IsEnabled="{Binding ExtensionsComboBoxIsEnabled}"/>
                             <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                     AncestorType={x:Type UserControl}}, Path=DataContext.ExtensionGroups}"
-                                      DisplayMemberPath="ExtensionName" 
-                                      VerticalAlignment="Center" SelectedValue="{Binding ExtensionGroup}" HorizontalAlignment="Stretch"/>
+                                      DisplayMemberPath="Name" 
+                                      VerticalAlignment="Center" SelectedValue="{Binding ExtensionGroup}" HorizontalAlignment="Stretch"
+                                      IsEnabled="{Binding ExtensionGroupsComboBoxIsEnabled}"/>
                         </StackPanel>
                         <TextBox VerticalAlignment="Center" Height="25" Grid.Column="2" HorizontalAlignment="Stretch">
                             <TextBox.Text>

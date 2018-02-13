@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using FileOrganizer.Model.Annotations;
+using FileOrganizer.Models;
 using Runtime.Extensions;
 
 
@@ -14,7 +15,11 @@ namespace FileOrganizer.Model
 {
     public class Filewatcher : INotifyPropertyChanged
     {
-        private ObservableCollection<FileSystemWatcher> _fileSystemWatchers = new ObservableCollection<FileSystemWatcher>();
+        //TODO: keine Ringverweise von Filewatchers aufeinander
+
+        private ObservableCollection<FileSystemWatcher> _fileSystemWatchers =
+            new ObservableCollection<FileSystemWatcher>();
+
         private ObservableCollection<FileSystemWatcherDto> _fileSystemWatcherDtos;
         private Dictionary<int, FileSystemWatcher> _fileSystemWatcherMapping = new Dictionary<int, FileSystemWatcher>();
 
@@ -75,49 +80,49 @@ namespace FileOrganizer.Model
         }
     }
 
-    public class FileSystemWatcherDto : INotifyPropertyChanged
-    {
-        private string _path;
-        private bool _active;
-        private int _id;
+    //public class FileSystemWatcherDto : INotifyPropertyChanged
+    //{
+    //    private string _path;
+    //    private bool _active;
+    //    private int _id;
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id
-        {
-            get { return _id; }
+    //    [Key]
+    //    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    //    public int Id
+    //    {
+    //        get { return _id; }
 
-            set { _id = value; }
-        }
+    //        set { _id = value; }
+    //    }
 
-        public string Path
-        {
-            get { return _path; }
+    //    public string Path
+    //    {
+    //        get { return _path; }
 
-            set
-            {
-                _path = value;
-                OnPropertyChanged(nameof(Path));
-            }
-        }
+    //        set
+    //        {
+    //            _path = value;
+    //            OnPropertyChanged(nameof(Path));
+    //        }
+    //    }
 
-        public bool Active
-        {
-            get { return _active; }
+    //    public bool Active
+    //    {
+    //        get { return _active; }
 
-            set
-            {
-                _active = value;
-                OnPropertyChanged(nameof(Active));
-            }
-        }
+    //        set
+    //        {
+    //            _active = value;
+    //            OnPropertyChanged(nameof(Active));
+    //        }
+    //    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+    //    public event PropertyChangedEventHandler PropertyChanged;
 
-        public virtual void OnPropertyChanged(string propertyName = null)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
+    //    public virtual void OnPropertyChanged(string propertyName = null)
+    //    {
+    //        if (PropertyChanged != null)
+    //            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    //    }
+    //}
 }

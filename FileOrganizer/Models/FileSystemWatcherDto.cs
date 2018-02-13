@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
 using Runtime.MVC;
 
-namespace FileOrganizer.Dto
+namespace FileOrganizer.Models
 {
     public class FileSystemWatcherDto : DataModelBase
     {
@@ -37,7 +36,7 @@ namespace FileOrganizer.Dto
             set
             {
                 _path = value;
-                OnPropertyChanged(nameof(Path));
+                OnPropertyChanged();
             }
         }
 
@@ -51,16 +50,8 @@ namespace FileOrganizer.Dto
             set
             {
                 _active = value;
-                OnPropertyChanged(nameof(Active));
+                OnPropertyChanged();
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public virtual void OnPropertyChanged(string propertyName = null)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

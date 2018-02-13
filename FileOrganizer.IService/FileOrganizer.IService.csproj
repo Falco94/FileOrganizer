@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\Desktop\Deploy\</OutputPath>
+    <OutputPath>..\..\..\..\Desktop\Deploy\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -52,10 +52,17 @@
       <Project>{023dcfc1-2367-4fa2-b2d6-9819b2ecf7e2}</Project>
       <Name>Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FileOrganizer.Model\FileOrganizer.Model.csproj">
+      <Project>{FC2C06E7-31AB-4103-9998-789439602F3C}</Project>
+      <Name>FileOrganizer.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FileOrganizer\FileOrganizer.Data.csproj">
       <Project>{D7BFED3A-25F5-4B99-AEA2-C24FDA1A9237}</Project>
       <Name>FileOrganizer.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

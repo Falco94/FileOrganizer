@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Windows.Input;
 using FileOrganizer.Data;
+using FileOrganizer.Helper;
 
 namespace FileOrganizer.Controller
 {
@@ -45,12 +46,12 @@ namespace FileOrganizer.Controller
 
             if (extensionsToSave.Any())
             {
-                var dataModel = new FODataModel();
-                dataModel.Extensions.AddRange(extensionsToSave.Select(x => new Extension
+                var context = ContextManager.Context();
+                context.Extensions.AddRange(extensionsToSave.Select(x => new Extension
                 {
                     ExtensionName = x
                 }));
-                dataModel.SaveChanges();
+                context.SaveChanges();
             }
 
             _closeFn?.Invoke();

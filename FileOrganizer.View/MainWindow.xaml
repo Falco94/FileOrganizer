@@ -25,40 +25,66 @@
                         Title="Extensions" 
                         FontSize="8"
                         TiltFactor="1"
-                        Width="180" Height="100" 
+                           HorizontalTitleAlignment="Center"
+                           Width="180" Height="100" 
                         Count="1" x:Name="ExtensionsTab" x:FieldModifier="public">
             </controls:Tile>
             <controls:Tile DockPanel.Dock="Left"
                         Title="Extensiongroups" 
                         TiltFactor="1"
-                        Width="180" Height="100" 
+                           HorizontalTitleAlignment="Center"
+                           Width="180" Height="100" 
                         Count="2" x:Name="ExtensiongroupsTab" x:FieldModifier="public">
             </controls:Tile>
             <controls:Tile DockPanel.Dock="Left"
                         Title="Ordnerüberwachung" 
                         TiltFactor="1"
-                        Width="180" Height="100" 
+                           HorizontalTitleAlignment="Center"
+                           Width="180" Height="100" 
                         Count="3" x:Name="FolderobservationTab" x:FieldModifier="public">
             </controls:Tile>
             <controls:Tile DockPanel.Dock="Left"
                         Title="Mapping" 
                         TiltFactor="1"
-                        Width="180" Height="100" 
+                           HorizontalTitleAlignment="Center"
+                           Width="180" Height="100" 
                         Count="4" x:Name="MappingTab" x:FieldModifier="public"/>
             <controls:Tile DockPanel.Dock="Left"
                         Title="DropDown" 
                         TiltFactor="1"
+                        HorizontalTitleAlignment="Center"
                         Width="180" Height="100" 
                         Count="5" x:Name="DropDownTab" x:FieldModifier="public">
+            </controls:Tile>
+            <controls:Tile DockPanel.Dock="Left"
+                           Title="Logs" 
+                           TiltFactor="1"
+                           HorizontalTitleAlignment="Center"
+                           Width="180" Height="100" 
+                           Count="6" x:Name="LogsTab" x:FieldModifier="public">
             </controls:Tile>
         </DockPanel>
 
 
-        <Grid Grid.Row="1" x:Name="MainContent" x:FieldModifier="public">
-            <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource Bool2VisibilityConverter}}" Panel.ZIndex="10">
-                <controls:ProgressRing IsActive="{Binding IsBusy}" Foreground="LimeGreen"/>
+        <Grid Grid.Row="1" x:Name="MainContent" x:FieldModifier="public" AllowDrop="True">
+            <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource Bool2VisibilityConverter}}">
+                <controls:ProgressRing IsActive="{Binding IsBusy}" Foreground="LimeGreen" Panel.ZIndex="10"/>
             </Border>
         </Grid>
+
+
+        <Border  Visibility="Hidden">
+            <Border.Background>
+                <VisualBrush Visual="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Stretch="None" />
+            </Border.Background>
+
+            <Grid  MinHeight="120">
+                <Border Opacity="0.8" />
+
+                <ContentPresenter x:Name="DialogContent" x:FieldModifier="public" 
+                                  Margin="5" VerticalAlignment="Center" Visibility="Hidden" />
+            </Grid>
+        </Border>
 
 
     </Grid>

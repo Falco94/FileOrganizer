@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using BITS.UI.WPF.Core;
 using FileOrganizer.Data;
+using FileOrganizer.Helper;
 using Runtime.Extensions;
 
 namespace FileOrganizer.Controller
@@ -22,12 +23,14 @@ namespace FileOrganizer.Controller
         private ExtensionGroup _extensionGroup;
         private IEnumerable<Extension> _extensions;
         private Controller.ExtensionGroups _parent;
+        private IEnumerable<ExtensionGroup> _currentGroups;
 
-        public ExtensionGroupsExtensionAssignement(Controller.ExtensionGroups parent, ExtensionGroup extensionGroup, IEnumerable<Models.Extension> extensions) : base(parent)
+        public ExtensionGroupsExtensionAssignement(Controller.ExtensionGroups parent,IEnumerable<ExtensionGroup> currentGroups, ExtensionGroup extensionGroup, IEnumerable<Models.Extension> extensions) : base(parent)
         {
             _extensionGroup = extensionGroup;
             _extensions = extensions;
             _parent = parent;
+            _currentGroups = currentGroups;
         }
 
         protected override async Task OnSetupAsync()
@@ -49,21 +52,45 @@ namespace FileOrganizer.Controller
         private async Task SaveGroupFn()
         {
             //Hinzufügen der Selektierten Extensions
-            _extensionGroup.Extensions = this.Model.Extensions.Where(x => x.IsSelected).Select(x => new Extension()
-            {
-                ExtensionName = x.ExtensionName,
-                ExtensionId = x.ExtensionId
-            }).ToObservableCollection();
+            var extensionKeys = this.Model.Extensions.Where(x => x.IsSelected).Select(x => x.ExtensionId);
 
-            List<ExtensionGroup> groups = null;
+            var context = ContextManager.Context();
 
-            using (var model = new FODataModel())
+            foreach (var extensionId in extensionKeys)
             {
-                groups = model.ExtensionGroups.Where(x => x.ExtensionGroupId != _extensionGroup.ExtensionGroupId).ToList();
-                groups.Add(this.Model.Group);
+                var existingExtension = _extensionGroup.Extensions.SingleOrDefault(x => x.ExtensionId == extensionId);
+
+                //extension already exists
+                if(existingExtension != null)
+                    continue;
+
+                var extension = context.Extensions.SingleOrDefault(x => x.ExtensionId == extensionId);
+
+                extension.CurrentExtensionGroupId = _extensionGroup.ExtensionGroupId;
+                _extensionGroup.Extensions.Add(extension);
             }
+
+            //remove deleted extensions
+            var deletedExtensions = _extensionGroup.Extensions
+                .Where(x => !extensionKeys.Contains(x.ExtensionId))
+                .ToList();
+
+            foreach (var deletedExtension in deletedExtensions)
+            {
+                deletedExtension.CurrentExtensionGroupId = null;
+                deletedExtension.ExtensionGroup = null;
+                _extensionGroup.Extensions.Remove(deletedExtension);
+            }
+
+            //List<ExtensionGroup> groups = null;
+
+            //using (var model = new FODataModel())
+            //{
+            //    groups = model.ExtensionGroups.Where(x => x.ExtensionGroupId != _extensionGroup.ExtensionGroupId).ToList();
+            //    groups.Add(this.Model.Group);
+            //}
             
-            await this.SwitchByAsync(region => _parent.View.MainContent, new Controller.ExtensionGroups(_parent, groups).Init(),
+            await this.SwitchByAsync(region => _parent.View.MainContent, new Controller.ExtensionGroups(_parent, _currentGroups).Init(),
                 (region, view) =>
                 {
                     region.Children.Clear();
@@ -82,10 +109,9 @@ namespace FileOrganizer.Controller
         {
             List<ExtensionGroup> groups = null;
 
-            using (var model = new FODataModel())
-            {
-                groups = model.ExtensionGroups.ToList();
-            }
+            var context = ContextManager.Context();
+
+            groups = context.ExtensionGroups.ToList();
 
             await this.SwitchByAsync(region => _parent.View.MainContent, new Controller.ExtensionGroups(_parent, groups).Init(),
                 (region, view) =>

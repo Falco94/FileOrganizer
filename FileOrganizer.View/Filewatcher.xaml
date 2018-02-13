@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FileOrganizer.View"
+             xmlns:validators="clr-namespace:Runtime.Validators;assembly=Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -12,50 +13,59 @@
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+
+
             <StackPanel Orientation="Horizontal">
-                <Button 
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        BorderThickness="0" 
-                        HorizontalAlignment="Left" Margin="5,5,0,5"
-                        Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Button     x:Name="ButtonSaveMappings" x:FieldModifier="public"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0" 
+                            HorizontalAlignment="Left" Margin="5,5,0,5"
+                            Command="{x:Static local:Filewatcher.SaveAssignementsCommand}"
+                            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                     <Button.ToolTip>
                         <ToolTip Content="Zuordnungen speichern"/>
                     </Button.ToolTip>
                     <Image Source="Resources/Save-64.png"/>
                 </Button>
-                
-                
-                
-            </StackPanel>
+            <Button     x:Name="ButtonAddMapping" x:FieldModifier="public"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Command="{x:Static local:Filewatcher.AddNewAssignementCommand}"
+                            HorizontalAlignment="Left" Margin="5,5,0,5"
+                            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                <Button.ToolTip>
+                    <ToolTip Content="Neue Zuordnung hinzufügen"/>
+                </Button.ToolTip>
+                <Image Source="Resources/Plus Math-64.png"/>
+            </Button>
+                </StackPanel>
             <Grid Grid.Row="1" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="0.1*"/>
-                    <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="0.8*"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Content="Aktiv"/>
-                <Label Grid.Column="1" Content="Extension"/>
-                <Label Grid.Column="2" Content="Zielpfad"/>
+            <Label Grid.Column="0" Content="Aktiv"/>
+            <Label Grid.Column="1" Content="Zielpfad"/>
             </Grid>
-            <ItemsControl Grid.Row="2" ItemsSource="{Binding Path=MappingItems}"
+        <ItemsControl Grid.Row="2" ItemsSource="{Binding Path=FileSystemWatcherDtos}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="0.1*"/>
-                                <ColumnDefinition Width="0.8*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="0.8*"/>
                                 <ColumnDefinition Width="30"/>
                                 <ColumnDefinition Width="30"/>
                             </Grid.ColumnDefinitions>
-                            <CheckBox Margin="5,0,0,0"  Grid.Column="0" IsChecked="{Binding Path=IsActive}"/>
-                            <ComboBox VerticalAlignment="Center" Grid.Column="1"/>
-                            <TextBox VerticalAlignment="Center" Height="25" Grid.Column="2" HorizontalAlignment="Stretch">
+                        <CheckBox Margin="5,0,0,0"  Grid.Column="0" IsChecked="{Binding Path=Active}"/>
+                        <TextBox VerticalAlignment="Center" Height="25" Grid.Column="1" HorizontalAlignment="Stretch">
                                 <TextBox.Text>
-                                    <Binding Path="TargetPath" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="Path" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
+                                        <validators:PathValidator/>
                                     </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
@@ -64,11 +74,12 @@
                             <Button 
                         Height="25"
                         Width="25"
-                        Grid.Column="3"
+                        Grid.Column="2"
                         Background="Transparent"
                         BorderBrush="Transparent"
                         BorderThickness="0" 
                         CommandParameter="{Binding}"
+                        Command="{x:Static local:Filewatcher.ChooseFolderCommand}"
                         HorizontalAlignment="Left" Margin="5,5,0,5"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                 <Button.ToolTip>
@@ -79,10 +90,11 @@
                             <Button 
                         Height="25"
                         Width="25"
-                        Grid.Column="4"
+                        Grid.Column="3"
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        BorderThickness="0" 
+                        BorderThickness="0"
+                        Command="{x:Static local:Filewatcher.DeleteAssignementCommand}"
                         CommandParameter="{Binding}"
                         HorizontalAlignment="Left" Margin="5,5,0,5"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">

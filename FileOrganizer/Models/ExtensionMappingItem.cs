@@ -16,10 +16,16 @@ namespace FileOrganizer.Models
         private string _extensionId;
         private string _targetPath;
         private bool _isActive;
+        private bool _extensionGroupsComboBoxIsEnabled;
+        private bool _extensionsComboBoxIsEnabled;
+        private Extension _extension;
+        private ExtensionGroup _extensionGroup;
 
         public ExtensionMappingItem()
         {
             IsActive = true;
+            ExtensionGroupsComboBoxIsEnabled = true;
+            ExtensionsComboBoxIsEnabled = true;
         }
 
         [Key]
@@ -36,10 +42,27 @@ namespace FileOrganizer.Models
                 OnPropertyChanged(nameof(ExtensionMappingItemId));
             }
         }
-        
-        public Extension Extension { get; set; }
 
-        public ExtensionGroup ExtensionGroup { get; set; }
+        public Extension Extension
+        {
+            get { return _extension;}
+            set
+            {
+                _extension = value;
+                
+                ExtensionGroupsComboBoxIsEnabled = _extension?.ExtensionId == 0;
+            }
+        }
+
+        public ExtensionGroup ExtensionGroup
+        {
+            get => _extensionGroup;
+            set
+            {
+                _extensionGroup = value;
+                ExtensionsComboBoxIsEnabled = _extensionGroup?.ExtensionGroupId == 0;
+            }
+        }
 
         public string TargetPath
         {
@@ -66,6 +89,28 @@ namespace FileOrganizer.Models
             {
                 _isActive = value;
                 OnPropertyChanged(nameof(IsActive));
+            }
+        }
+
+        [NotMapped]
+        public bool ExtensionGroupsComboBoxIsEnabled
+        {
+            get { return _extensionGroupsComboBoxIsEnabled; }
+            set
+            {
+                _extensionGroupsComboBoxIsEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [NotMapped]
+        public bool ExtensionsComboBoxIsEnabled
+        {
+            get { return _extensionsComboBoxIsEnabled; }
+            set
+            {
+                _extensionsComboBoxIsEnabled = value;
+                OnPropertyChanged();
             }
         }
     }

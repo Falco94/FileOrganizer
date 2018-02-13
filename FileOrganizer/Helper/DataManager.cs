@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FileOrganizer.Data;
-using FileOrganizer.Dto;
 using FileOrganizer.Models;
 
 namespace FileOrganizer.Helper

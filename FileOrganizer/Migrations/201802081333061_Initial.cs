@@ -22,11 +22,11 @@ namespace FileOrganizer.Migrations
                     {
                         ExtensionId = c.Int(nullable: false, identity: true),
                         ExtensionName = c.String(nullable: false, maxLength: 128),
-                        ExtensionGroup_ExtensionGroupId = c.Int(),
+                        CurrentExtensionGroupId = c.Int(),
                     })
                 .PrimaryKey(t => new { t.ExtensionId, t.ExtensionName })
-                .ForeignKey("dbo.ExtensionGroups", t => t.ExtensionGroup_ExtensionGroupId)
-                .Index(t => t.ExtensionGroup_ExtensionGroupId);
+                .ForeignKey("dbo.ExtensionGroups", t => t.CurrentExtensionGroupId)
+                .Index(t => t.CurrentExtensionGroupId);
             
             CreateTable(
                 "dbo.ExtensionMappingItems",
@@ -61,10 +61,10 @@ namespace FileOrganizer.Migrations
         {
             DropForeignKey("dbo.ExtensionMappingItems", "ExtensionGroup_ExtensionGroupId", "dbo.ExtensionGroups");
             DropForeignKey("dbo.ExtensionMappingItems", new[] { "Extension_ExtensionId", "Extension_ExtensionName" }, "dbo.Extensions");
-            DropForeignKey("dbo.Extensions", "ExtensionGroup_ExtensionGroupId", "dbo.ExtensionGroups");
+            DropForeignKey("dbo.Extensions", "CurrentExtensionGroupId", "dbo.ExtensionGroups");
             DropIndex("dbo.ExtensionMappingItems", new[] { "ExtensionGroup_ExtensionGroupId" });
             DropIndex("dbo.ExtensionMappingItems", new[] { "Extension_ExtensionId", "Extension_ExtensionName" });
-            DropIndex("dbo.Extensions", new[] { "ExtensionGroup_ExtensionGroupId" });
+            DropIndex("dbo.Extensions", new[] { "CurrentExtensionGroupId" });
             DropTable("dbo.FileSystemWatcherDtoes");
             DropTable("dbo.ExtensionMappingItems");
             DropTable("dbo.Extensions");

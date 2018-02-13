@@ -4,11 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FileOrganizer.View"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Border Background="MediumSeaGreen" AllowDrop="True" x:Name="DropDown" x:FieldModifier="public">
-            <TextBlock Text="Dropdown Bereich" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </Border>
+             d:DesignHeight="300" d:DesignWidth="300" AllowDrop="True">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <CheckBox Margin="0,6,0,0" IsChecked="{Binding SearchSubfolders}"/>
+            <Label Content="Search in Subfolders"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <controls:ProgressRing IsActive="{Binding IsBusy}" Foreground="LimeGreen" Panel.ZIndex="10"/>
+            <Border  AllowDrop="True" x:Name="DropDown" x:FieldModifier="public" Background="IndianRed" Opacity="0.2" BorderThickness="10">
+                <TextBlock Text="Dropdown Bereich" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"/>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
+
+
+

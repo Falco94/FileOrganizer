@@ -1,36 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using FileOrganizer.Helper;
 using FileOrganizer.Model.Annotations;
+using FileOrganizer.Models;
+using Runtime.Extensions;
 
 namespace FileOrganizer.Model
 {
-    public class DropExtension : INotifyPropertyChanged
+    public class Logs : INotifyPropertyChanged
     {
-        private bool _searchSubfolders;
-        private bool _isBusy;
+        private ObservableCollection<LogEntry> _logEntries;
 
-        public bool SearchSubfolders
+        public Logs(IEnumerable<LogEntry> entries)
         {
-            get { return _searchSubfolders; }
-            set
-            {
-                _searchSubfolders = value;
-                OnPropertyChanged();
-            }
+            LogEntries = entries.ToObservableCollection();
         }
 
-        public bool IsBusy
+        public ObservableCollection<LogEntry> LogEntries
         {
-            get { return _isBusy; }
+            get { return _logEntries; }
             set
             {
-                _isBusy = value; 
+                _logEntries = value;
                 OnPropertyChanged();
             }
         }

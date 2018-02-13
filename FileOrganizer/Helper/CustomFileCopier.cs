@@ -13,10 +13,6 @@ namespace FileOrganizer.Helper
 {
     public class FileCopier
     {
-        public FileCopier()
-        {
-        }
-
         public void Copy(String destPath, List<string> extensions)
         {
             var dataModel = new FileOrganizerDataModel();
@@ -146,7 +142,7 @@ namespace FileOrganizer.Helper
             
         }
 
-        public void Copy(String[] source, String destPath)
+        public bool Copy(String[] source, String destPath)
         {
             ShellLib.ShellFileOperation fo = new ShellLib.ShellFileOperation();
 
@@ -166,10 +162,14 @@ namespace FileOrganizer.Helper
             fo.DestFiles = dest.ToArray();
 
             bool RetVal = fo.DoOperation();
-            if (RetVal)
+
+
+            if (!RetVal)
             {
                 //TODO Fehlerbehandlung
             }
+
+            return RetVal;
         }
     }
 }

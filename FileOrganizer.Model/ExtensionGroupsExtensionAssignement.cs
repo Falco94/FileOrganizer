@@ -30,6 +30,15 @@ namespace FileOrganizer.Model
                 // Ist die Extension bereits angewählt?
                IsSelected = group.Extensions.Select(y=>y.ExtensionId).Contains(x.ExtensionId)
             }));
+
+            foreach (var groupExtensionItem in Extensions)
+            {
+                if (groupExtensionItem.IsSelected)
+                {
+                    groupExtensionItem.ExtensionGroup = group;
+                    groupExtensionItem.CurrentExtensionGroupId = group.ExtensionGroupId;
+                }
+            }
         }
 
         public ObservableCollection<GroupExtensionItem> Extensions

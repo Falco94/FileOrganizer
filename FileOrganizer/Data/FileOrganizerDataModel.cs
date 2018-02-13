@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using FileOrganizer.Dto;
 using FileOrganizer.Models;
 
 namespace FileOrganizer.Data

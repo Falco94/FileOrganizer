@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using FileOrganizer.Model.Annotations;
 using FileOrganizer.Models;
@@ -28,7 +29,7 @@ namespace FileOrganizer.Model
 
         public Extensions Init(IEnumerable<Extension> extensions)
         {
-            LoadedExtensions = new ObservableCollection<Extension>(extensions);
+            LoadedExtensions = new ObservableCollection<Extension>(extensions.OrderBy(x => x.ExtensionName));
             return this;
         }
 

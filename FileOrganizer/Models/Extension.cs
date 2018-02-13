@@ -13,6 +13,8 @@ namespace FileOrganizer.Models
     {
         private int _extensionId;
         private string _extensionName;
+        private ExtensionGroup _extensionGroup;
+        private int? _currentExtensionGroupId;
 
         [Key, Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -26,7 +28,7 @@ namespace FileOrganizer.Models
             set
             {
                 _extensionId = value;
-                OnPropertyChanged(nameof(ExtensionId));
+                OnPropertyChanged();
             }
         }
 
@@ -41,7 +43,27 @@ namespace FileOrganizer.Models
             set
             {
                 _extensionName = value;
-                OnPropertyChanged(nameof(ExtensionName));
+                OnPropertyChanged();
+            }
+        }
+
+        public ExtensionGroup ExtensionGroup
+        {
+            get { return _extensionGroup; }
+            set
+            {
+                _extensionGroup = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public int? CurrentExtensionGroupId
+        {
+            get { return _currentExtensionGroupId; }
+            set
+            {
+                _currentExtensionGroupId = value; 
+                OnPropertyChanged();
             }
         }
     }

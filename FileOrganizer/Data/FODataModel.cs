@@ -2,7 +2,6 @@
 
 namespace FileOrganizer.Data
 {
-    using FileOrganizer.Dto;
     using System;
     using System.Data.Entity;
     using System.Linq;
@@ -29,7 +28,16 @@ namespace FileOrganizer.Data
         public virtual DbSet<ExtensionMappingItem> ExtensionMappingItems { get; set; }
         public virtual DbSet<Extension> Extensions { get; set; }
         public virtual DbSet<FileSystemWatcherDto> FileSystemWatchers { get; set; }
+        public virtual DbSet<LogEntry> LogEntries { get; set; }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ExtensionGroup>()
+                .HasMany(s => s.Extensions)
+                .WithOptional(x => x.ExtensionGroup)
+                .HasForeignKey(x=>x.CurrentExtensionGroupId);
+
+        }
     }
 
     //public class MyEntity
