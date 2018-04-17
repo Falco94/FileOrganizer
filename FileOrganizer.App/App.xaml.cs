@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Runtime.Enums;
+using Runtime.Services.Plumbing;
 
 namespace FileOrganizer.App
 {
@@ -14,7 +16,16 @@ namespace FileOrganizer.App
         {
             base.OnStartup(e);
 
-            Controller.FileOrganizerApp.Run();
+            try
+            {
+                Controller.FileOrganizerApp.Run();
+            }
+            catch (Exception ex)
+            {
+                var logger = new LoggingService();
+                logger.InitializeService();
+                logger.Log(ex.Message, LogType.ERROR);
+            }
         }
     }
 }

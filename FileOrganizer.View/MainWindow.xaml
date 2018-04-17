@@ -3,14 +3,16 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                        xmlns:converter="clr-namespace:Runtime.Converters;assembly=Runtime"
-                      Title="FileOrganizer"
+                       xmlns:ui="clr-namespace:Core.UI;assembly=Core.UI"
+                       Title="FileOrganizer"
                       Height="860"
-                      Width="1024"
+                      Width="1120"
                       BorderThickness="1"
                       WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <converter:Bool2VisibilityConverter x:Key="Bool2VisibilityConverter"/>
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
 
@@ -20,7 +22,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0">
+        <DockPanel x:Name="DockPanel" x:FieldModifier="public" Grid.Row="0" LastChildFill="False"
+            IsEnabled="{Binding Path=IsBusy, Converter={StaticResource InverseBoolConverter}}">
+            <!--ui:DialogBehaviour.LayoutType="LayoutRoot"-->
             <controls:Tile DockPanel.Dock="Left"
                         Title="Extensions" 
                         FontSize="8"
@@ -57,23 +61,36 @@
                         Count="5" x:Name="DropDownTab" x:FieldModifier="public">
             </controls:Tile>
             <controls:Tile DockPanel.Dock="Left"
+                           
                            Title="Logs" 
                            TiltFactor="1"
                            HorizontalTitleAlignment="Center"
                            Width="180" Height="100" 
                            Count="6" x:Name="LogsTab" x:FieldModifier="public">
             </controls:Tile>
+
+            <controls:Tile DockPanel.Dock="Left"
+                           
+                           Title="Donate" 
+                           TiltFactor="1"
+                           HorizontalTitleAlignment="Center"
+                           Width="180" Height="100" 
+                           Count="7" x:Name="Donate" x:FieldModifier="public">
+            </controls:Tile>
+
         </DockPanel>
 
 
         <Grid Grid.Row="1" x:Name="MainContent" x:FieldModifier="public" AllowDrop="True">
-            <Border Visibility="{Binding Path=IsBusy, Converter={StaticResource Bool2VisibilityConverter}}">
-                <controls:ProgressRing IsActive="{Binding IsBusy}" Foreground="LimeGreen" Panel.ZIndex="10"/>
-            </Border>
+
         </Grid>
 
+        <Border Grid.Row="1" Visibility="{Binding Path=IsBusy, Converter={StaticResource Bool2VisibilityConverter}}">
+            <controls:ProgressRing IsActive="{Binding IsBusy}" Foreground="#FF8900" Panel.ZIndex="10"/>
+        </Border>
 
-        <Border  Visibility="Hidden">
+
+        <!--<Border Grid.Row="1" Visibility="Visible">
             <Border.Background>
                 <VisualBrush Visual="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Stretch="None" />
             </Border.Background>
@@ -82,9 +99,22 @@
                 <Border Opacity="0.8" />
 
                 <ContentPresenter x:Name="DialogContent" x:FieldModifier="public" 
+                                  Margin="5" VerticalAlignment="Center" Visibility="Visible" />
+            </Grid>
+        </Border>-->
+
+        <!--<Border Grid.Row="1" ui:DialogBehaviour.LayoutType="DialogRoot" Visibility="Hidden" Panel.ZIndex="2" BorderBrush="Aquamarine">
+            <Border.Background>
+                <VisualBrush Visual="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Stretch="None" />
+            </Border.Background>
+
+            <Grid ui:DialogBehaviour.LayoutType="DialogPanel" MinHeight="120">
+                <Border Opacity="0.8" />
+
+                <ContentPresenter x:Name="DialogContent" x:FieldModifier="public" ui:DialogBehaviour.LayoutType="DialogContent"
                                   Margin="5" VerticalAlignment="Center" Visibility="Hidden" />
             </Grid>
-        </Border>
+        </Border>-->
 
 
     </Grid>

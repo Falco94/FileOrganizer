@@ -18,9 +18,10 @@
         </StackPanel>
 
         <Grid Grid.Row="1">
+            <TextBlock Text="DropDown Bereich" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0" Panel.ZIndex="11"/>
             <controls:ProgressRing IsActive="{Binding IsBusy}" Foreground="LimeGreen" Panel.ZIndex="10"/>
             <Border  AllowDrop="True" x:Name="DropDown" x:FieldModifier="public" Background="IndianRed" Opacity="0.2" BorderThickness="10">
-                <TextBlock Text="Dropdown Bereich" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,50,0,0"/>
+                
             </Border>
         </Grid>
     </Grid>

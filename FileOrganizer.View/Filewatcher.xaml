@@ -49,7 +49,7 @@
             <Label Grid.Column="0" Content="Aktiv"/>
             <Label Grid.Column="1" Content="Zielpfad"/>
             </Grid>
-        <ItemsControl Grid.Row="2" ItemsSource="{Binding Path=FileSystemWatcherDtos}"
+        <ItemsControl x:Name="ItemsControl" x:FieldModifier="public" Grid.Row="2" ItemsSource="{Binding Path=FileSystemWatcherDtos}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -64,8 +64,8 @@
                         <TextBox VerticalAlignment="Center" Height="25" Grid.Column="1" HorizontalAlignment="Stretch">
                                 <TextBox.Text>
                                     <Binding Path="Path" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <validators:PathValidator/>
+                                    <Binding.ValidationRules >
+                                        <validators:PathValidator ValidatesOnTargetUpdated="True"/>
                                     </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>

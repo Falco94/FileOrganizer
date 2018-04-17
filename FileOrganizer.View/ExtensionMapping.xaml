@@ -39,7 +39,7 @@
                 <Image Source="Resources/Plus Math-64.png"/>
             </Button>
         </StackPanel>
-        <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" Margin="10,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="0.2*"/>
@@ -53,7 +53,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="ItemsControl">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid HorizontalAlignment="Stretch">
+                    <Grid HorizontalAlignment="Stretch" Margin="10,0,10,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="0.2*"/>
@@ -78,7 +78,7 @@
                             <TextBox.Text>
                                 <Binding Path="TargetPath" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
-                                        <validators:PathValidator/>
+                                        <validators:PathValidator ValidatesOnTargetUpdated="True"/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>

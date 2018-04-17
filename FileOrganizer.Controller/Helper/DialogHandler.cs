@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BITS.UI.WPF.Core.Controllers;
+using MahApps.Metro.Controls;
 
 namespace FileOrganizer.Controller.Helper
 {
-    public class DialogManager
+    public static class DialogHandler
     {
-        private static DialogController _dialogAccessor;
+        private static MetroWindow _dialogRoot;
         private static object _lock = new object();
 
-
-        public static DialogController DialogAccessor
+        public static MetroWindow DialogRoot
         {
-            get { return _dialogAccessor; }
+            get { return _dialogRoot; }
             set
             {
-                _dialogAccessor = value;
+                _dialogRoot = value;
             }
         }
     }

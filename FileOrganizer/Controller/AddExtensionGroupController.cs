@@ -53,7 +53,7 @@ namespace FileOrganizer.Controller
                     _viewModel.Extensions.AddSorted(extension);
                     Action saveExtensions = () =>
                     {
-                        
+
                         dataModel.Extensions.Add(new Extension
                         {
                             ExtensionName = extension

@@ -13,9 +13,11 @@ using System.Windows.Navigation;
 using BITS.UI.WPF.Core;
 using FileOrganizer;
 using BITS.UI.WPF.Core.Controllers;
+using FileOrganizer.Controller.Helper;
 using FileOrganizer.Data;
 using FileOrganizer.Helper;
 using FileOrganizer.Models;
+using MahApps.Metro.Controls.Dialogs;
 using Runtime.Extensions;
 
 namespace FileOrganizer.Controller
@@ -39,10 +41,17 @@ namespace FileOrganizer.Controller
         {
             await base.OnSetupAsync();
 
-            this.View = new View.ExtensionMapping();
-            this.Model = new Model.ExtensionMapping();
+            Action action = null;
 
-            SetupCommandBindings();
+            action = () =>
+            {
+                this.View = new View.ExtensionMapping();
+                this.Model = new Model.ExtensionMapping();
+
+                SetupCommandBindings();
+            };
+
+            SafeExecutor.ExecuteFn(action);
         }
 
         public async Task LoadData()
@@ -83,10 +92,10 @@ namespace FileOrganizer.Controller
 
         private void SetupCommandBindings()
         {
-            this.BindAsync(AddNewAssignement, AddNewMapping, CanAddNewMapping);
-            this.BindAsync(SaveAssignements, SaveMappings, CanSaveMappings);
-            this.BindAsync<ExtensionMappingItem>(ChooseFolder, ChooseFolderDialog, CanChooseFolderDialog);
-            this.BindAsync<ExtensionMappingItem>(DeleteAssignement, DeleteMapping, CanDeleteMapping);
+            //this.BindAsync(AddNewAssignement, AddNewMapping, CanAddNewMapping);
+            //this.BindAsync(SaveAssignements, SaveMappings, CanSaveMappings);
+            //this.BindAsync<ExtensionMappingItem>(ChooseFolder, ChooseFolderDialog, CanChooseFolderDialog);
+            //this.BindAsync<ExtensionMappingItem>(DeleteAssignement, DeleteMapping, CanDeleteMapping);
         }
 
         private async Task<bool> CanAddNewMapping()
@@ -127,7 +136,19 @@ namespace FileOrganizer.Controller
                     context.Entry(mappingItem).State = EntityState.Added;
             }
 
-            context.SaveChanges();
+            int changes = 0;
+
+            SafeExecutor.ExecuteFn(() =>
+            {
+                changes = context.SaveChanges();
+            }, "ExtensionMapping.SaveMappings");
+
+
+            if (changes > 0)
+            {
+                await DialogHandler.DialogRoot.ShowMessageAsync("Success", $"Saved {changes} entries",
+                    MessageDialogStyle.Affirmative);
+            }
 
             ExtensionMappingManager.ReInit();
         }

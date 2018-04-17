@@ -13,13 +13,14 @@ namespace FileOrganizer.Model
 {
     public class ExtensionGroups : INotifyPropertyChanged, IDataErrorInfo
     {
-        private ObservableCollection<ExtensionGroup> _loadedExtensionGroups;
+        private ObservableCollection<ExtensionGroup> _loadedExtensionGroups = new ObservableCollection<ExtensionGroup>();
         private IEnumerable<Extension> _availableExtensions;
         private bool _isBusy;
 
         public ExtensionGroups(IEnumerable<ExtensionGroup> extensionGroups, IEnumerable<Extension> extensions)
         {
-            _loadedExtensionGroups = new ObservableCollection<ExtensionGroup>(extensionGroups);
+            if(extensionGroups != null)
+                _loadedExtensionGroups = new ObservableCollection<ExtensionGroup>(extensionGroups);
 
             _availableExtensions = extensions;
             SetAvailableExtensions();

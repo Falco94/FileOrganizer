@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="FileOrganizer.View.Donate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FileOrganizer.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="640" d:DesignWidth="1024">
+    <Grid>
+        <!--<WebBrowser Name="wb1" Source="C:\Users\Falco\Source\Repos\FileOrganizer\FileOrganizer.View\Resources\Donate.html">
+        </WebBrowser>-->
+
+        <Button Name="DonateBtn" x:FieldModifier="public"
+                Width="600"
+                Height="200"
+                Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0" 
+                    Margin="5,5,0,5"
+                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+            <Image Source="Resources/Donate.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        </Button>
+    </Grid>
+</UserControl>

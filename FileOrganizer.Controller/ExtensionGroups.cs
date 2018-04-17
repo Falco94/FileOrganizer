@@ -12,15 +12,12 @@ using FileOrganizer.Data;
 using FileOrganizer.Helper;
 using FileOrganizer.Models;
 using FileOrganizer.Service;
+using MahApps.Metro.Controls.Dialogs;
+using DialogManager = MahApps.Metro.Controls.Dialogs.DialogManager;
 
 namespace FileOrganizer.Controller
 {
-    internal interface IDialogAccessor
-    {
-        DialogController DialogController { get; }
-    }
-
-    public class ExtensionGroups : ContentController<Controller.ExtensionGroups, View.ExtensionGroups, Model.ExtensionGroups>, Helper.IDialogAccessor
+    public class ExtensionGroups : ContentController<Controller.ExtensionGroups, View.ExtensionGroups, Model.ExtensionGroups>
     {
         private readonly IEnumerable<ExtensionGroup> _extensionGroups;
         private readonly IEnumerable<Extension> _extensions;
@@ -42,7 +39,6 @@ namespace FileOrganizer.Controller
         public ExtensionGroups(BITS.UI.WPF.Core.Controllers.Controller parent,
             IEnumerable<ExtensionGroup> extensionGroups, IEnumerable<Extension> extensions) : base(parent)
         {
-            this.DialogController = DialogManager.DialogAccessor;
             _extensionGroups = extensionGroups;
             _extensions = extensions;
         }
@@ -205,7 +201,19 @@ namespace FileOrganizer.Controller
                 }
             }
 
-            context.SaveChanges();
+            int changes = 0;
+
+            SafeExecutor.ExecuteFn(() =>
+            {
+                changes = context.SaveChanges();
+            }, "ExtensionGroups.SaveExtensionGroups");
+            
+
+            if (changes > 0)
+            {
+                await DialogHandler.DialogRoot.ShowMessageAsync("Success", $"Saved {changes} entries",
+                    MessageDialogStyle.Affirmative);
+            }
 
 
             this.Model.IsBusy = false;

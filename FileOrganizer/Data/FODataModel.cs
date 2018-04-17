@@ -32,13 +32,15 @@ namespace FileOrganizer.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            Database.SetInitializer<FODataModel>(new CreateDatabaseIfNotExists<FODataModel>());
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<ExtensionGroup>()
                 .HasMany(s => s.Extensions)
                 .WithOptional(x => x.ExtensionGroup)
                 .HasForeignKey(x=>x.CurrentExtensionGroupId);
-
-        }
     }
+}
 
     //public class MyEntity
     //{

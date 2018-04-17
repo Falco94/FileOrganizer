@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOrganizer.Data", "FileOrganizer\FileOrganizer.Data.csproj", "{D7BFED3A-25F5-4B99-AEA2-C24FDA1A9237}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime", "..\..\..\..\..\..\Develop\Runtime\Runtime\Runtime.csproj", "{023DCFC1-2367-4FA2-B2D6-9819B2ECF7E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime", "..\..\..\..\..\Develop\Runtime\Runtime\Runtime.csproj", "{023DCFC1-2367-4FA2-B2D6-9819B2ECF7E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellLib", "..\..\..\..\..\..\Develop\ShellBasics\ShellBasics\ShellLib.csproj", "{B748E75E-AFF9-4FEA-8581-7F04AD5DA539}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShellLib", "..\..\..\..\..\Develop\ShellBasics\ShellBasics\ShellLib.csproj", "{B748E75E-AFF9-4FEA-8581-7F04AD5DA539}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOrganizer.Controller", "FileOrganizer.Controller\FileOrganizer.Controller.csproj", "{5DB82C06-F175-4E9D-960E-374410C33B05}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOrganizer.IService", "FileOrganizer.IService\FileOrganizer.IService.csproj", "{3D364232-9E14-4E5B-8B50-CF42770C4427}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOrganizer.App", "FileOrganizer.App\FileOrganizer.App.csproj", "{EB5B2BA1-0E3C-4D2C-B63A-4AECB418CD03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.UI", "Core.UI\Core.UI.csproj", "{D72FD2CA-FFF6-427A-96EE-D604F08F086E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,41 +65,15 @@ Global
 		{EB5B2BA1-0E3C-4D2C-B63A-4AECB418CD03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB5B2BA1-0E3C-4D2C-B63A-4AECB418CD03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB5B2BA1-0E3C-4D2C-B63A-4AECB418CD03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D72FD2CA-FFF6-427A-96EE-D604F08F086E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D72FD2CA-FFF6-427A-96EE-D604F08F086E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D72FD2CA-FFF6-427A-96EE-D604F08F086E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D72FD2CA-FFF6-427A-96EE-D604F08F086E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 10
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://falco94.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\..\\..\\..\\..\\..\\Develop\\Runtime\\Runtime\\Runtime.csproj
-		SccProjectName1 = ../Runtime/Runtime
-		SccLocalPath1 = ..\\..\\..\\..\\..\\..\\Develop\\Runtime\\Runtime
-		SccProjectUniqueName2 = ..\\..\\..\\..\\..\\..\\Develop\\ShellBasics\\ShellBasics\\ShellLib.csproj
-		SccProjectName2 = ../ShellBasics/ShellBasics
-		SccLocalPath2 = ..\\..\\..\\..\\..\\..\\Develop\\ShellBasics\\ShellBasics
-		SccProjectUniqueName3 = FileOrganizer.Controller\\FileOrganizer.Controller.csproj
-		SccProjectName3 = FileOrganizer.Controller
-		SccLocalPath3 = FileOrganizer.Controller
-		SccProjectUniqueName4 = FileOrganizer.View\\FileOrganizer.View.csproj
-		SccProjectName4 = FileOrganizer.View
-		SccLocalPath4 = FileOrganizer.View
-		SccProjectUniqueName5 = FileOrganizer.Model\\FileOrganizer.Model.csproj
-		SccProjectName5 = FileOrganizer.Model
-		SccLocalPath5 = FileOrganizer.Model
-		SccProjectUniqueName6 = FileOrganizer.Service\\FileOrganizer.Service.csproj
-		SccProjectName6 = FileOrganizer.Service
-		SccLocalPath6 = FileOrganizer.Service
-		SccProjectUniqueName7 = FileOrganizer.IService\\FileOrganizer.IService.csproj
-		SccProjectName7 = FileOrganizer.IService
-		SccLocalPath7 = FileOrganizer.IService
-		SccProjectUniqueName8 = FileOrganizer\\FileOrganizer.Data.csproj
-		SccProjectName8 = FileOrganizer
-		SccLocalPath8 = FileOrganizer
-		SccProjectUniqueName9 = FileOrganizer.App\\FileOrganizer.App.csproj
-		SccProjectName9 = FileOrganizer.App
-		SccLocalPath9 = FileOrganizer.App
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {494675B4-66C3-4697-9AFF-382A25E42AA6}
 	EndGlobalSection
 EndGlobal

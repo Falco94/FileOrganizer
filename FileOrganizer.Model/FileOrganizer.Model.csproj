@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Donate.cs" />
     <Compile Include="DropExtension.cs" />
     <Compile Include="ExtensionGroupsExtensionAssignement.cs" />
     <Compile Include="ExtensionMapping.cs" />

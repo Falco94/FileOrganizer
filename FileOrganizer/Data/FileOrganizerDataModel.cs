@@ -18,7 +18,7 @@ namespace FileOrganizer.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            Database.SetInitializer<FileOrganizerDataModel>(null);
+            Database.SetInitializer<FileOrganizerDataModel>(new CreateDatabaseIfNotExists<FileOrganizerDataModel>());
             base.OnModelCreating(modelBuilder);
         }
 
@@ -29,5 +29,5 @@ namespace FileOrganizer.Data
         public virtual DbSet<ExtensionMappingItem> ExtensionMappingItems { get; set; }
         public virtual DbSet<Extension> Extensions { get; set; }
         public virtual DbSet<FileSystemWatcherDto> FileSystemWatchers { get; set; }
-}
+    }
 }

@@ -23,6 +23,7 @@ namespace FileOrganizer.Models
             set
             {
                 _id = value;
+                OnPropertyChanged();
             }
         }
 

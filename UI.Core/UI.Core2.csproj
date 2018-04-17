@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Controller\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BITS.UI.WPF" Version="1.8.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BITS.UI.WPF.Core">
+      <HintPath>..\packages\BITS.UI.WPF.1.8.9\lib\net452\BITS.UI.WPF.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\PresentationCore.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\PresentationFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\WindowsBase.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="View\ConfirmDialog.xaml.cs">
+      <DependentUpon>ConfirmDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\ErrorDialog.xaml.cs">
+      <DependentUpon>ErrorDialog.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

@@ -13,7 +13,7 @@ namespace FileOrganizer.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201802081333061_Initial"; }
+            get { return "201804131351145_Initial"; }
         }
         
         string IMigrationMetadata.Source
