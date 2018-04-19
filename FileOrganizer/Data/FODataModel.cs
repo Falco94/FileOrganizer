@@ -32,7 +32,7 @@ namespace FileOrganizer.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            Database.SetInitializer<FODataModel>(new CreateDatabaseIfNotExists<FODataModel>());
+            Database.SetInitializer<FODataModel>(null);
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ExtensionGroup>()

@@ -25,6 +25,10 @@ namespace FileOrganizer.Controller
     public class ExtensionMapping :
         ContentController<Controller.ExtensionMapping, View.ExtensionMapping, Model.ExtensionMapping>
     {
+        private List<ExtensionMappingItem> _extensionMappings;
+        private List<Extension> _extensions;
+        private List<ExtensionGroup> _extensionGroups;
+
         public static RoutedCommand AddNewAssignement
             => FileOrganizer.View.ExtensionMapping.AddNewAssignementCommand;
 
@@ -46,29 +50,15 @@ namespace FileOrganizer.Controller
             action = () =>
             {
                 this.View = new View.ExtensionMapping();
-                this.Model = new Model.ExtensionMapping();
-
+                this.Model = new Model.ExtensionMapping().Init(_extensionMappings, _extensions, _extensionGroups);
+                
                 SetupCommandBindings();
             };
 
             SafeExecutor.ExecuteFn(action);
         }
 
-        public async Task LoadData()
-        {
-            var context = ContextManager.Context();
-
-            var extensionMappings = context.ExtensionMappingItems.ToList();
-            var extensions = context.Extensions.ToList();
-            var extensionGroups = context.ExtensionGroups.ToList();
-
-            //TODO: Combobox Sources Filtern
-            //FilterExtensions(extensionMappings, extensions, extensionGroups);
-
-            this.Model.Init(extensionMappings, extensions, extensionGroups);
-
-        }
-
+        //TODO: Combobox Sources Filtern
         private void FilterExtensions(IEnumerable<ExtensionMappingItem> mappingItems, IList<Models.Extension> extensions, IList<Models.ExtensionGroup> extensionGroups)
         {
             //Filtert bereits gemappte Items aus den Listen
@@ -92,10 +82,10 @@ namespace FileOrganizer.Controller
 
         private void SetupCommandBindings()
         {
-            //this.BindAsync(AddNewAssignement, AddNewMapping, CanAddNewMapping);
-            //this.BindAsync(SaveAssignements, SaveMappings, CanSaveMappings);
-            //this.BindAsync<ExtensionMappingItem>(ChooseFolder, ChooseFolderDialog, CanChooseFolderDialog);
-            //this.BindAsync<ExtensionMappingItem>(DeleteAssignement, DeleteMapping, CanDeleteMapping);
+            this.BindAsync(AddNewAssignement, AddNewMapping, CanAddNewMapping);
+            this.BindAsync(SaveAssignements, SaveMappings, CanSaveMappings);
+            this.BindAsync<ExtensionMappingItem>(ChooseFolder, ChooseFolderDialog, CanChooseFolderDialog);
+            this.BindAsync<ExtensionMappingItem>(DeleteAssignement, DeleteMapping, CanDeleteMapping);
         }
 
         private async Task<bool> CanAddNewMapping()
@@ -204,8 +194,13 @@ namespace FileOrganizer.Controller
             .All(IsValid);
         }
 
-        public ExtensionMapping(BITS.UI.WPF.Core.Controllers.Controller parent) : base(parent)
+        public ExtensionMapping(BITS.UI.WPF.Core.Controllers.Controller parent,
+            IEnumerable<ExtensionMappingItem> extensionMappings, IEnumerable<Extension> extensions,
+            IEnumerable<ExtensionGroup> extensionGroups) : base(parent)
         {
+            _extensionMappings = new List<ExtensionMappingItem>(extensionMappings);
+            _extensions = new List<Extension>(extensions);
+            _extensionGroups = new List<ExtensionGroup>(extensionGroups);
         }
     }
 }

@@ -114,34 +114,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\AddExtensionAssignementView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddExtensionGroupView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddExtensionSelectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddFileWatcherView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddNewExtensionsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\--FileCopyView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FileOrganizerMainView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="Controller\AddExtensionAssignementController.cs" />
     <Compile Include="Controller\AddExtensionGroupController.cs" />
     <Compile Include="Controller\AddExtensionSelectionViewController.cs" />
@@ -153,7 +125,6 @@
     <Compile Include="Data\FODataModel.cs" />
     <Compile Include="Enums\FileAction.cs" />
     <Compile Include="Enums\ResourceStrings.cs" />
-    <Compile Include="Data\FileOrganizerDataModel.cs" />
     <Compile Include="Helper\ContextManager.cs" />
     <Compile Include="Helper\CustomFileCopier.cs" />
     <Compile Include="Helper\DataManager.cs" />
@@ -161,15 +132,15 @@
     <Compile Include="Enums\PathHelper.cs" />
     <Compile Include="Helper\DtoMapper.cs" />
     <Compile Include="Helper\ExtensionMappingManager.cs" />
-    <Compile Include="Migrations\201804131351145_Initial.cs" />
-    <Compile Include="Migrations\201804131351145_Initial.Designer.cs">
-      <DependentUpon>201804131351145_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201804172127155_InitialCreate.cs" />
+    <Compile Include="Migrations\201804172127155_InitialCreate.Designer.cs">
+      <DependentUpon>201804172127155_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Extension.cs" />
-    <Compile Include="Models\ExtensionSelectionItem.cs" />
-    <Compile Include="Models\ExtensionMappingItem.cs" />
     <Compile Include="Models\ExtensionGroup.cs" />
+    <Compile Include="Models\ExtensionMappingItem.cs" />
+    <Compile Include="Models\ExtensionSelectionItem.cs" />
     <Compile Include="Models\FileSystemWatcherDto.cs" />
     <Compile Include="Models\LogEntry.cs" />
     <Compile Include="Test\TestPaths.cs" />
@@ -181,6 +152,9 @@
     <Compile Include="ViewModels\FileCopyViewModel.cs" />
     <Compile Include="ViewModels\FileOrganizerMainViewModel.cs" />
     <Compile Include="MVC\BaseMahappsWindow.cs" />
+    <Compile Include="Views\--FileCopyView.xaml.cs">
+      <DependentUpon>--FileCopyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddExtensionAssignementView.xaml.cs">
       <DependentUpon>AddExtensionAssignementView.xaml</DependentUpon>
     </Compile>
@@ -196,12 +170,8 @@
     <Compile Include="Views\AddNewExtensionsView.xaml.cs">
       <DependentUpon>AddNewExtensionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\--FileCopyView.xaml.cs">
-      <DependentUpon>--FileCopyView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\FileOrganizerMainView.xaml.cs">
       <DependentUpon>FileOrganizerMainView.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -219,8 +189,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Resource Include="Resources\Details-64.png" />
-    <EmbeddedResource Include="Migrations\201804131351145_Initial.resx">
-      <DependentUpon>201804131351145_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201804172127155_InitialCreate.resx">
+      <DependentUpon>201804172127155_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -270,6 +240,36 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dto\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\--FileCopyView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddExtensionAssignementView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddExtensionGroupView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddExtensionSelectionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddFileWatcherView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AddNewExtensionsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FileOrganizerMainView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets')" />

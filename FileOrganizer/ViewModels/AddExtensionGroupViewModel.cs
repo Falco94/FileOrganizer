@@ -116,7 +116,7 @@ namespace FileOrganizer.ViewModels
             {
                 if (_extensionGroups == null)
                 {
-                    var dataModel = new FileOrganizerDataModel();
+                    var dataModel = ContextManager.Context();
                     _extensionGroups = new List<ExtensionGroup>(dataModel.ExtensionGroups.ToList());
                 }
 
@@ -207,7 +207,7 @@ namespace FileOrganizer.ViewModels
 
         public void ReloadExtensions()
         {
-            var dataModel = new FileOrganizerDataModel();
+            var dataModel = ContextManager.Context();
             Extensions = new ObservableCollection<string>(dataModel.Extensions.Select(x=>x.ExtensionName));
         }
 

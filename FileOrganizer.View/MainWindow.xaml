@@ -6,7 +6,7 @@
                        xmlns:ui="clr-namespace:Core.UI;assembly=Core.UI"
                        Title="FileOrganizer"
                       Height="860"
-                      Width="1120"
+                      Width="1300"
                       BorderThickness="1"
                       WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>

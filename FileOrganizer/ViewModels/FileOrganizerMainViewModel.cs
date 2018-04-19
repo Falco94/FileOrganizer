@@ -65,8 +65,8 @@ namespace FileOrganizer.ViewModels
         {
             base.Initialize();
 
-            var dataModel = new FileOrganizerDataModel();
-            
+            var dataModel = ContextManager.Context();
+
             Extensions = new ObservableCollection<string>(dataModel.Extensions.Select(x=>x.ExtensionName).ToList());
             MappingItems = new ObservableCollection<ExtensionMappingItem>(dataModel.ExtensionMappingItems.ToList());
 

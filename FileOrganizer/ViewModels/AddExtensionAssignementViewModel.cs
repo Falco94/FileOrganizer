@@ -72,7 +72,7 @@ namespace FileOrganizer.ViewModels
         {
             get
             {
-                var dataModel = new FileOrganizerDataModel();
+                var dataModel = ContextManager.Context();
                 return dataModel.Extensions.Select(x=>x.ExtensionName)
                     .ToList()
                     .OrderBy(x=>x)

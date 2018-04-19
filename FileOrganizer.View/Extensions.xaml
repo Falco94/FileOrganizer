@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:FileOrganizer.View"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid AllowDrop="True" x:Name="DropDown" x:FieldModifier="public">
         <!--<ListView ItemsSource="{Binding Path=LoadedExtensions}" HorizontalAlignment="Center">
             <ListView.View>
                 <GridView>

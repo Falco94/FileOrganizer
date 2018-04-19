@@ -18,6 +18,7 @@ using FileOrganizer.Models;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.Effects;
+using FileOrganizer.IService;
 using MahApps.Metro.Controls.Dialogs;
 using PayPal.Api;
 using Application = System.Windows.Application;
@@ -25,7 +26,7 @@ using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace FileOrganizer.Controller
 {
-    public class MainWindow : WindowController<MainWindow, View.MainWindow, Model.MainWindow>, Core.UI.IDialogAccessor
+    public class MainWindow : WindowController<MainWindow, View.MainWindow, Model.MainWindow>, Core.UI.IDialogAccessor, IProvideExtensions
     {
         private List<FileSystemWatcher> _fileSystemWatchers = new List<FileSystemWatcher>();
 
@@ -142,18 +143,31 @@ namespace FileOrganizer.Controller
         {
             this.Model.IsBusy = true;
 
-            var controller = new ExtensionMapping(this).Init();
+            IEnumerable<ExtensionMappingItem> extensionMappings = null;
+            IEnumerable<Extension> extensions = null;
+            IEnumerable<ExtensionGroup> extensionGroups = null;
 
-            Action action = null;
+            Task.Run(() =>
+            {
+                var context = ContextManager.Context();
 
-            action = () =>
-                RunAsync(async () => { await controller.LoadData(); }, async () =>
-                {
-                    this.Model.IsBusy = false;
-                    await this.SwitchByAsync(region => region.MainContent, controller);
-                });
+                extensionMappings = context.ExtensionMappingItems.ToList();
+                extensions = GetExtensions();
+                extensionGroups = context.ExtensionGroups.ToList();
 
-            SafeExecutor.ExecuteFn(action);
+            }).ContinueWith(async antecedent =>
+            {
+                this.Model.IsBusy = false;
+
+                await this.SwitchByAsync(region => region.MainContent,
+                    new ExtensionMapping(this, extensionMappings, extensions, extensionGroups).Init(), (region, view) =>
+                    {
+                        region.Children.Clear();
+                        region.Children.Add(view);
+                    },
+                    (region, view) => region.Children.Clear());
+
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void ExtensionsTabClick()
@@ -164,15 +178,14 @@ namespace FileOrganizer.Controller
             Task.Run(() =>
             {
                 var context = ContextManager.Context();
-
-                extensions = context.Extensions.ToList();
+                extensions = GetExtensions();
 
             }).ContinueWith(async antecedent =>
             {
                 this.Model.IsBusy = false;
 
                 await this.SwitchByAsync(region => region.MainContent,
-                    new Extensions(this, DialogCoordinator.Instance, extensions).Init(), (region, view) =>
+                    new Extensions(this, DialogCoordinator.Instance, extensions, this).Init(), (region, view) =>
                     {
                         region.Children.Clear();
                         region.Children.Add(view);
@@ -259,6 +272,15 @@ namespace FileOrganizer.Controller
                 this.View.Show();
                 this.View.WindowState = WindowState.Normal;
                 this.View.Close(); 
+            };
+
+            contextMenu.MenuItems.Add(menuItem);
+
+            menuItem = new MenuItem("Open");
+            menuItem.Click += (s, e) =>
+            {
+                this.View.Show();
+                this.View.WindowState = WindowState.Normal;
             };
 
             contextMenu.MenuItems.Add(menuItem);
@@ -431,6 +453,13 @@ namespace FileOrganizer.Controller
                 this.Model.IsBusy = false;
                 continueFn();
             }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        public IEnumerable<Extension> GetExtensions()
+        {
+            var context = ContextManager.Context();
+
+            return context.Extensions.ToList();
         }
 
         public DialogController DialogController { get; set; }

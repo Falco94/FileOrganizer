@@ -11,7 +11,9 @@ namespace FileOrganizer.Model
 {
     public class Extensions : INotifyPropertyChanged
     {
-        private ObservableCollection<Extension> _loadedExtensions;
+        private ObservableCollection<Extension> _loadedExtensions = new ObservableCollection<Extension>();
+        private bool _isBusy;
+        private bool _searchSubfolders;
 
         public ObservableCollection<Extension> LoadedExtensions
         {
@@ -29,8 +31,34 @@ namespace FileOrganizer.Model
 
         public Extensions Init(IEnumerable<Extension> extensions)
         {
-            LoadedExtensions = new ObservableCollection<Extension>(extensions.OrderBy(x => x.ExtensionName));
+            if(extensions != null)
+                LoadedExtensions = new ObservableCollection<Extension>(extensions.OrderBy(x => x.ExtensionName));
+
             return this;
+        }
+
+        public bool IsBusy
+        {
+            get
+            {
+                return _isBusy;
+            }
+
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool SearchSubfolders
+        {
+            get { return _searchSubfolders; }
+            set
+            {
+                _searchSubfolders = value;
+                OnPropertyChanged();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

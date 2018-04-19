@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FileOrganizer.Data;
+using FileOrganizer.Helper;
 using FileOrganizer.IService;
 using FileOrganizer.Models;
 
@@ -14,7 +15,7 @@ namespace FileOrganizer.Service
     {
         public IEnumerable<FileSystemWatcherDto> LoadFileSystemWatchers()
         {
-            return new FileOrganizerDataModel().FileSystemWatchers;
+            return ContextManager.Context().FileSystemWatchers;
         }
     }
 }

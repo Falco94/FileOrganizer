@@ -27,16 +27,16 @@ namespace FileOrganizer.Model
         public ExtensionMapping Init(IEnumerable<ExtensionMappingItem> mappingItems,
             IEnumerable<Models.Extension> extensions, IEnumerable<Models.ExtensionGroup> extensionGroups)
         {
-            MappingItems = mappingItems.ToObservableCollection();
-            Extensions = extensions.ToObservableCollection();
-            ExtensionGroups = extensionGroups.ToObservableCollection();
+            MappingItems = mappingItems?.ToObservableCollection();
+            Extensions = extensions?.ToObservableCollection();
+            ExtensionGroups = extensionGroups?.ToObservableCollection();
 
             //add null values
-            Extensions.Add(new Extension());
-            ExtensionGroups.Add(new ExtensionGroup());
+            Extensions?.Add(new Extension());
+            ExtensionGroups?.Add(new ExtensionGroup());
 
-            Extensions = Extensions.OrderBy(x => x.ExtensionId).ToObservableCollection();
-            ExtensionGroups = ExtensionGroups.OrderBy(x => x.ExtensionGroupId).ToObservableCollection();
+            Extensions = Extensions?.OrderBy(x => x.ExtensionId).ToObservableCollection();
+            ExtensionGroups = ExtensionGroups?.OrderBy(x => x.ExtensionGroupId).ToObservableCollection();
 
             return this;
         }

@@ -12,11 +12,12 @@ namespace FileOrganizer.Model
 {
     public class Logs : INotifyPropertyChanged
     {
-        private ObservableCollection<LogEntry> _logEntries;
+        private ObservableCollection<LogEntry> _logEntries = new ObservableCollection<LogEntry>();
 
         public Logs(IEnumerable<LogEntry> entries)
         {
-            LogEntries = entries.ToObservableCollection();
+            if(entries != null)
+                LogEntries = entries.ToObservableCollection();
         }
 
         public ObservableCollection<LogEntry> LogEntries

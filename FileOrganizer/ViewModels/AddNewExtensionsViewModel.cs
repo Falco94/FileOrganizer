@@ -70,23 +70,21 @@ namespace FileOrganizer.ViewModels
 
         public void ReloadExtensions()
         {
-            using (var dataModel = new FileOrganizerDataModel())
-            {
-                Extensions = dataModel.Extensions.Select(x => x.ExtensionName)
+            var dataModel = ContextManager.Context();
+            Extensions = dataModel.Extensions.Select(x => x.ExtensionName)
                     .ToList()
                     .OrderBy(x => x)
                     .ToObservableCollection();
-            }
+            
         }
 
         public void ReloadExtensionGroups()
         {
-            using (var dataModel = new FileOrganizerDataModel())
-            {
-                ExtensionGroups = dataModel.ExtensionGroups
+            var dataModel = ContextManager.Context();
+            ExtensionGroups = dataModel.ExtensionGroups
                     .ToList()
                     .ToObservableCollection(); 
-            }
+            
         }
     }
 }

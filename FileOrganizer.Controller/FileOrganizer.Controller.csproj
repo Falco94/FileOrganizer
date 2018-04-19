@@ -112,6 +112,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddExtensionSelection.cs" />
     <Compile Include="Donate.cs" />
     <Compile Include="DropExtension.cs" />
     <Compile Include="ExtensionGroups.cs" />
@@ -135,6 +136,10 @@
     <ProjectReference Include="..\Core.UI\Core.UI.csproj">
       <Project>{d72fd2ca-fff6-427a-96ee-d604f08f086e}</Project>
       <Name>Core.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileOrganizer.IService\FileOrganizer.IService.csproj">
+      <Project>{3D364232-9E14-4E5B-8B50-CF42770C4427}</Project>
+      <Name>FileOrganizer.IService</Name>
     </ProjectReference>
     <ProjectReference Include="..\FileOrganizer.Model\FileOrganizer.Model.csproj">
       <Project>{fc2c06e7-31ab-4103-9998-789439602f3c}</Project>

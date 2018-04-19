@@ -15,7 +15,7 @@ namespace FileOrganizer.Helper
     {
         public void Copy(String destPath, List<string> extensions)
         {
-            var dataModel = new FileOrganizerDataModel();
+            var dataModel = ContextManager.Context();
 
             var mappingItems =
                 dataModel.ExtensionMappingItems.ToList()
@@ -54,7 +54,7 @@ namespace FileOrganizer.Helper
 
         public void Copy(String destPath)
         {
-            var dataModel = new FileOrganizerDataModel();
+            var dataModel = ContextManager.Context();
 
             var mappingItems =
                 dataModel.ExtensionMappingItems.ToList();

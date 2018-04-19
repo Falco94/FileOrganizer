@@ -22,7 +22,7 @@ namespace FileOrganizer.Controller
             await base.OnSetupAsync();
 
             var context = ContextManager.Context();
-            var logs = context.LogEntries.OrderByDescending(x => x.DateTime);
+            var logs = context.LogEntries?.OrderByDescending(x => x.DateTime);
 
             this.View = new View.Logs();
             this.Model = new Model.Logs(logs);

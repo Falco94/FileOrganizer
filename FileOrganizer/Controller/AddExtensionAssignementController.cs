@@ -103,7 +103,7 @@ namespace FileOrganizer.Controller
 
         protected void CommandDeleteAssignement(object sender, ExecutedRoutedEventArgs e)
         {
-            var dataModel = new FileOrganizerDataModel();
+            var dataModel = ContextManager.Context();
 
             var selectedMappingItem = e.Parameter as ExtensionMappingItem;
 

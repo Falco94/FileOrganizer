@@ -35,7 +35,7 @@ namespace FileOrganizer.Controller
         {
             var extensions = _viewModel.SelectedExtension.Replace(" ", ";").Split(';');
 
-            var dataModel = new FileOrganizerDataModel();
+            var dataModel = ContextManager.Context();
 
             foreach (var extensionForEach in extensions)
             {
@@ -85,7 +85,7 @@ namespace FileOrganizer.Controller
             //extensionGroup.Extensions = new ObservableCollection<string>(selectedExtensions.Select(x=>x.Extension));
             extensionGroup.Name = _viewModel.Name;
 
-            var dataModel = new FileOrganizerDataModel();
+            var dataModel = ContextManager.Context();
 
             _viewModel.ExtensionGroups.Add(extensionGroup);
             dataModel.ExtensionGroups.Add(extensionGroup);

@@ -41,22 +41,21 @@ namespace FileOrganizer.Controller
 
         protected void CommandSaveExtensions(object sender, ExecutedRoutedEventArgs e)
         {
-            using (var dataModel = new FileOrganizerDataModel())
+            var dataModel = ContextManager.Context();
+            foreach (var extension in _addNewExtensionsViewModel.Extensions)
             {
-                foreach (var extension in _addNewExtensionsViewModel.Extensions)
-                {
-                    var exists = dataModel.Extensions.FirstOrDefault(x => x.ExtensionName == extension) != null;
+                var exists = dataModel.Extensions.FirstOrDefault(x => x.ExtensionName == extension) != null;
 
-                    if (!exists)
+                if (!exists)
+                {
+                    dataModel.Extensions.Add(new Extension
                     {
-                        dataModel.Extensions.Add(new Extension
-                        {
-                            ExtensionName = extension
-                        });
-                    }
+                        ExtensionName = extension
+                    });
                 }
             }
         }
+        
 
         protected void CheckCommandAddExtension(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -81,9 +80,8 @@ namespace FileOrganizer.Controller
                 {
                     _addNewExtensionsViewModel.Extensions.AddSorted(extension);
 
-                    using (var dataModel = new FileOrganizerDataModel())
-                    {
-                        var exists = dataModel.Extensions.FirstOrDefault(x => x.ExtensionName == extension) != null;
+                    var dataModel = ContextManager.Context();
+                    var exists = dataModel.Extensions.FirstOrDefault(x => x.ExtensionName == extension) != null;
 
                         if (!exists)
                         {
@@ -94,7 +92,7 @@ namespace FileOrganizer.Controller
                         }
 
                         dataModel.SaveChanges();
-                    }
+                    
                 }
             }
 
@@ -110,9 +108,9 @@ namespace FileOrganizer.Controller
         {
             var value = (string)e.Parameter;
 
-            var dataModel = new FileOrganizerDataModel();
+            var dataModel = ContextManager.Context();
 
-            if(_addNewExtensionsViewModel.Extensions.Contains(value))
+            if (_addNewExtensionsViewModel.Extensions.Contains(value))
             {
                 _addNewExtensionsViewModel.Extensions.Remove(value);
 
@@ -139,8 +137,8 @@ namespace FileOrganizer.Controller
             var addExtensionGroupView = new AddExtensionGroupView();
             addExtensionGroupView.ShowDialog();
 
-            
-            var dataModel = new FileOrganizerDataModel();
+
+            var dataModel = ContextManager.Context();
             _addNewExtensionsViewModel.ExtensionGroups = dataModel.ExtensionGroups
                 .ToList()
                 .ToObservableCollection();
@@ -160,7 +158,7 @@ namespace FileOrganizer.Controller
                 var addExtensionGroupView = new AddExtensionGroupView(group);
                 addExtensionGroupView.ShowDialog();
 
-                var dataModel = new FileOrganizerDataModel();
+                var dataModel = ContextManager.Context();
                 _addNewExtensionsViewModel.ExtensionGroups = new ObservableCollection<ExtensionGroup>(dataModel.ExtensionGroups.ToList());
             }
         }

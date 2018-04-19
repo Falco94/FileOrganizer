@@ -21,7 +21,7 @@ namespace FileOrganizer.ViewModels
         {
             base.Initialize(parameter);
 
-            var dataModel = new FileOrganizerDataModel();
+            var dataModel = ContextManager.Context();
 
             FileSystemWatcherDtos = new ObservableCollection<FileSystemWatcherDto>(dataModel.FileSystemWatchers.ToList());
 
