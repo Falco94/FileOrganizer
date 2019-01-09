@@ -9,8 +9,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using BITS.UI.WPF.Core;
+using FileOrganizer.Controller.Helper;
 using FileOrganizer.Data;
 using FileOrganizer.Helper;
+using FileOrganizer.Model;
 using Runtime.Extensions;
 
 namespace FileOrganizer.Controller
@@ -24,6 +26,8 @@ namespace FileOrganizer.Controller
         private IEnumerable<Extension> _extensions;
         private Controller.ExtensionGroups _parent;
         private IEnumerable<ExtensionGroup> _currentGroups;
+
+        private bool isOrderedAscending = false;
 
         public ExtensionGroupsExtensionAssignement(Controller.ExtensionGroups parent,IEnumerable<ExtensionGroup> currentGroups, ExtensionGroup extensionGroup, IEnumerable<Models.Extension> extensions) : base(parent)
         {
@@ -40,8 +44,82 @@ namespace FileOrganizer.Controller
             this.View = new View.ExtensionGroupsExtensionAssignement();
             this.Model = new Model.ExtensionGroupsExtensionAssignement(_extensionGroup, _extensions);
 
+            //ListView Header Functions
+            this.View.ExtensionsNameHeader.MouseLeftButtonDown += OrderGroupsOnClick;
+            this.View.OrderGroupsAscending.Click += async (s, e) =>
+            {
+                this.Model.IsBusy = true;
+                await testAsync();
+            };
+
+            this.View.OrderGroupsDescending.Click += OrderGroupsDescendingOnClick;
+            this.View.SelectAllCheckbox.Click += SelectAllCheckboxOnClick;
+
+
             this.BindAsync(CancelView, CancelViewFn, CanCancelView);
             this.BindAsync(SaveGroup, SaveGroupFn, CanSaveGroup);
+        }
+
+        private async Task testAsync()
+        {
+            var listToOrder = new List<GroupExtensionItem>();
+            listToOrder = this.Model.Extensions.ToList();
+
+            await Task.Run(() =>
+            {
+                listToOrder = listToOrder.OrderBy(x => x.ExtensionName).ToList();
+                isOrderedAscending = true;
+                this.Model.Extensions = listToOrder.ToAsyncObservableCollection();
+            });
+            
+        }
+
+        private void SelectAllCheckboxOnClick(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (this.View.SelectAllCheckbox.IsChecked == null)
+                return;
+
+            foreach (var groupExtensionItem in this.Model.Extensions)
+            {
+                groupExtensionItem.IsSelected = this.View.SelectAllCheckbox.IsChecked.Value;
+            }
+        }
+
+        private async void OrderGroupsOnClick(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            this.Model.IsBusy = true;
+            await OrderGroupsOnClickAsync();
+            this.Model.IsBusy = false;
+        }
+
+        private async Task OrderGroupsOnClickAsync()
+        {
+            if (isOrderedAscending)
+            {
+                this.Model.Extensions = this.Model.Extensions.OrderByDescending(x => x.ExtensionName)
+                    .ToAsyncObservableCollection();
+                isOrderedAscending = false;
+            }
+            else
+            {
+                this.Model.Extensions = this.Model.Extensions.OrderBy(x => x.ExtensionName).ToAsyncObservableCollection();
+                isOrderedAscending = true;
+            }
+        }
+        
+        private async Task OrderGroupsAscendingOnClickAsync()
+        {
+            this.Model.Extensions = this.Model.Extensions.OrderBy(x => x.ExtensionName).ToAsyncObservableCollection();
+            isOrderedAscending = true;
+        }
+
+
+        private void OrderGroupsDescendingOnClick(object sender, RoutedEventArgs routedEventArgs)
+        {
+            this.Model.Extensions = this.Model.Extensions.OrderByDescending(x => x.ExtensionName).ToAsyncObservableCollection();
+            isOrderedAscending = false;
+
+            this.Model.IsBusy = false;
         }
 
         private async Task<bool> CanSaveGroup()
@@ -121,6 +199,21 @@ namespace FileOrganizer.Controller
                 }
                 , (region, view) => region.Children.Clear());
         }
+
+        private void RunAsync(Task asyncFn, Action continueFn)
+        {
+            this.Model.IsBusy = true;
+            Task.Run(async () =>
+            {
+                await asyncFn;
+            }).ContinueWith(async antecedent =>
+            {
+                this.Model.IsBusy = false;
+                continueFn();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+
 
         public class Busy : IBusy
         {

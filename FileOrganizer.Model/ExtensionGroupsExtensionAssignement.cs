@@ -5,13 +5,15 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Runtime.Utility;
 
 namespace FileOrganizer.Model
 {
     public class ExtensionGroupsExtensionAssignement : INotifyPropertyChanged
     {
-        private ObservableCollection<GroupExtensionItem> _extensions;
+        private AsyncObservableCollection<GroupExtensionItem> _extensions;
         private ExtensionGroup _group;
+        private bool _isBusy;
 
         public ExtensionGroupsExtensionAssignement(ExtensionGroup group, IEnumerable<Extension> extensions)
         {
@@ -23,7 +25,7 @@ namespace FileOrganizer.Model
 
             Group = group;
 
-            Extensions = new ObservableCollection<GroupExtensionItem>(extensions.Select(x=> new GroupExtensionItem
+            Extensions = new AsyncObservableCollection<GroupExtensionItem>(extensions.Select(x=> new GroupExtensionItem
             {
                 ExtensionName = x.ExtensionName,
                 ExtensionId = x.ExtensionId,
@@ -41,7 +43,7 @@ namespace FileOrganizer.Model
             }
         }
 
-        public ObservableCollection<GroupExtensionItem> Extensions
+        public AsyncObservableCollection<GroupExtensionItem> Extensions
         {
             get { return _extensions; }
             set
@@ -55,6 +57,16 @@ namespace FileOrganizer.Model
         {
             get { return _group; }
             set { _group = value; }
+        }
+
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value; 
+                OnPropertyChanged();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

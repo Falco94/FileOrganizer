@@ -64,7 +64,7 @@
                 </Grid>
 
                 <ItemsControl Grid.Row="2" ItemsSource="{Binding Path=LoadedExtensionGroups}"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="5,5,0,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid HorizontalAlignment="Stretch">
@@ -76,7 +76,8 @@
                                     <ColumnDefinition Width="30"/>
                                     <ColumnDefinition Width="30"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox VerticalAlignment="Center" Height="25" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding Name}">
+                                <TextBox VerticalAlignment="Top" Height="25" Grid.Column="1" HorizontalAlignment="Stretch" 
+                                         Text="{Binding Name}">
                                 </TextBox>
 
                                 <ItemsControl Grid.Column="2" ItemsSource="{Binding Extensions}">
@@ -87,7 +88,35 @@
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Button Content="{Binding ExtensionName}" IsEnabled="False"/>
+                                            <Border BorderBrush="#007DB2" BorderThickness="2,2,2,2" CornerRadius="3,3,3,3" Panel.ZIndex="0" Margin="3,3,3,3">
+                                                <Grid Width="100" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="70"/>
+                                                        <ColumnDefinition Width="30"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock VerticalAlignment="Center" Grid.Column="0" Text="{Binding ExtensionName}" HorizontalAlignment="Left" 
+                                                               ToolTip="{Binding ExtensionName}" Margin="5,0,0,0"/>
+                                                    <Button HorizontalContentAlignment="Right"
+                                                            Height="25"
+                                                            Width="25"
+                                                            Grid.Column="1"
+                                                            Background="Transparent"
+                                                            BorderBrush="Transparent"
+                                                            BorderThickness="0" 
+                                                            x:Name="ButtonDeleteAssignement"
+                                                            Command="{x:Static local:ExtensionGroups.DeleteExtensionCommand}"
+                                                            CommandParameter="{Binding}" Margin="0,0,0,0"
+                                                            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                                        <Button.ToolTip>
+                                                            <ToolTip Content="Delete Extension"/>
+                                                        </Button.ToolTip>
+                                                        <Image Source="Resources/Trash-64.png"/>
+                                                    </Button>
+
+                                                </Grid>
+
+                                            </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>

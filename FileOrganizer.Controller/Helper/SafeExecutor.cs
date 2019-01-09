@@ -10,24 +10,72 @@ namespace FileOrganizer.Controller.Helper
 {
     public static class SafeExecutor
     {
-        public static void ExecuteFn(Action action)
+        public static async Task<bool> ExecuteFn(Action action, string name, Action failureFn)
         {
-            ExecuteFn(action, string.Empty);
+            if(!await ExecuteFn(action, name))
+                return await ExecuteFn(failureFn);
+            else
+            {
+                return true;
+            }
         }
 
-        internal static async void ExecuteFn(Action action, string name)
+        public static async Task<bool> ExecuteFn(Action action)
+        {
+            return await ExecuteFn(action, string.Empty);
+        }
+
+        internal static async Task<bool> ExecuteFn(Action action, string name, string message, Action failureFn)
+        {
+            if (!await ExecuteFn(action, name, message))
+                return await ExecuteFn(failureFn);
+            else
+            {
+                return true;
+            }
+        }
+
+        internal static async Task<bool> ExecuteFn(Action action, string name, string message)
         {
             try
             {
-                action();
+                Application.Current.Dispatcher.Invoke(action);
+                return true;
             }
             catch (Exception e)
             {
-                var result = await DialogHandler.DialogRoot.ShowMessageAsync("Copy to Clipboard? Error at " + name, e.Message, MessageDialogStyle.AffirmativeAndNegative);
-                if (result == MessageDialogResult.Affirmative)
+                await Application.Current.Dispatcher.Invoke(async () =>
                 {
-                    Clipboard.SetText(e.Message);
-                }
+                    var result = await DialogHandler.DialogRoot.ShowMessageAsync("Copy to Clipboard? Error at " + name, message, MessageDialogStyle.AffirmativeAndNegative);
+                    if (result == MessageDialogResult.Affirmative)
+                    {
+                        Clipboard.SetText(e.Message);
+                    }
+                });
+
+                return false;
+            }
+        }
+
+        internal static async Task<bool> ExecuteFn(Action action, string name)
+        {
+            try
+            {
+                Application.Current.Dispatcher.Invoke(action);
+                return true;
+            }
+            catch (Exception e)
+            {
+                await Application.Current.Dispatcher.Invoke(async () =>
+                {
+                    var result = await DialogHandler.DialogRoot.ShowMessageAsync("Copy to Clipboard? Error at " + name, e.Message, MessageDialogStyle.AffirmativeAndNegative);
+                    if (result == MessageDialogResult.Affirmative)
+                    {
+                        Clipboard.SetText(e.Message);
+                    }
+                });
+
+                return false;
             }
         }
     }

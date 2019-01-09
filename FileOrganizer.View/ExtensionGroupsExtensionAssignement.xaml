@@ -5,8 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FileOrganizer.View"
              xmlns:validators="clr-namespace:Runtime.Validators;assembly=Runtime"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:converters="clr-namespace:Runtime.Converters;assembly=Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:Bool2VisibilityConverter x:Key="Bool2VisibilityConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -32,7 +41,7 @@
                     <GridViewColumn Width="220">
                         <GridViewColumnHeader>
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="{Binding SelectAll}"/>
+                                <CheckBox x:Name="SelectAllCheckbox" x:FieldModifier="public"/>
                                 <TextBlock Text="Hinzufügen"></TextBlock>
                             </StackPanel>
                         </GridViewColumnHeader>
@@ -49,9 +58,9 @@
                         <GridViewColumnHeader>Extensions
                             <GridViewColumnHeader.ContextMenu>
                                 <ContextMenu 
-                                        Name="LastNameCM">
-                                    <MenuItem Header="Ascending" />
-                                    <MenuItem Header="Descending" />
+                                        x:Name="ExtensionsNameHeader" x:FieldModifier="public">
+                                    <MenuItem Header="Ascending" x:Name="OrderGroupsAscending" x:FieldModifier="public"/>
+                                    <MenuItem Header="Descending" x:Name="OrderGroupsDescending" x:FieldModifier="public"/>
                                 </ContextMenu>
                             </GridViewColumnHeader.ContextMenu>
                         </GridViewColumnHeader>
@@ -71,10 +80,14 @@
             <Button Command="{x:Static local:ExtensionGroupsExtensionAssignement.SaveGroupCommand}">
                 <TextBlock Text="Hinzufügen"/>
             </Button>
-            <Button >
+            <Button Command="{x:Static local:ExtensionGroupsExtensionAssignement.CancelViewCommand}">
                 <TextBlock Text="Abbrechen" />
             </Button>
         </StackPanel>
+
+        <Border Grid.Row="1" Visibility="{Binding Path=IsBusy, Converter={StaticResource Bool2VisibilityConverter}}">
+            <mah:ProgressRing IsActive="{Binding IsBusy}" Foreground="#FF8900" Panel.ZIndex="10"/>
+        </Border>
 
     </Grid>
 </UserControl>

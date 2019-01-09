@@ -48,22 +48,31 @@ namespace FileOrganizer.Controller
         protected override async Task OnSetupAsync()
         {
             await base.OnSetupAsync();
-            
+
             this.View = new View.Extensions();
             this.Model = new Model.Extensions().Init(_extensions);
 
             this.BindAsync<Models.Extension>(DeleteExtension, DeleteExtensionFn, CanDeleteExtension);
 
-            this.View.DropDown.Drop += (s, e) =>
+            this.View.DropDown.Drop += async (s, e) =>
             {
                 this.Model.IsBusy = true;
 
                 var newExtensionsList = new List<string>();
 
-                Task.Run(() =>
-                    {
-                        newExtensionsList = ExtensionDrop(e);
-                    })
+                //Ask for subfolder Search
+                var settings = new MetroDialogSettings();
+                settings.AffirmativeButtonText = "Yes";
+                settings.NegativeButtonText = "No";
+
+                this.Model.SearchSubfolders = await DialogHandler.DialogRoot.ShowMessageAsync("Advanced Search",
+                                                  "Search in Subfolders?", MessageDialogStyle.AffirmativeAndNegative,
+                                                  settings) == MessageDialogResult.Affirmative;
+
+                var result = await DialogHandler.DialogRoot.ShowProgressAsync("Progess", "Searching for extensions...");
+
+
+                await Task.Run(async () => { newExtensionsList = await ExtensionDrop(e, result); })
                     .ContinueWith(
                         async antecedent =>
                         {
@@ -81,6 +90,12 @@ namespace FileOrganizer.Controller
 
                             selectionView.InitCloseFn(() => selectionWindow.Close());
 
+                            //Still open?
+                            if (result.IsOpen)
+                            {
+                                await result.CloseAsync();
+                            }
+
                             selectionWindow.ShowDialog();
                             this.Model = new Model.Extensions().Init(_provideExtensions.GetExtensions());
                         },
@@ -88,7 +103,8 @@ namespace FileOrganizer.Controller
             };
         }
 
-        private List<string> ExtensionDrop(DragEventArgs dragEventArgs)
+        private async Task<List<string>> ExtensionDrop(DragEventArgs dragEventArgs,
+            ProgressDialogController dialogController)
         {
             if (dragEventArgs.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -96,15 +112,72 @@ namespace FileOrganizer.Controller
 
                 var newExtensionsList = new List<string>();
 
-                var folders = (string[])dragEventArgs.Data.GetData(DataFormats.FileDrop);
+                var folders = (string[]) dragEventArgs.Data.GetData(DataFormats.FileDrop);
+
+                int directoryCount = 0;
+
                 var allFiles = new List<string>();
+                var foldersearch = new FolderSearch();
 
+                int progress = 0;
 
+                DirectoryFinished RefreshProgress = delegate(object s, EventArgs e)
+                {
+                    SafeExecutor.ExecuteFn(() =>
+                    {
+                        if (progress >= directoryCount)
+                        {
+                            dialogController.CloseAsync();
+                        }
+                        else
+                        {
+                            progress++;
+                            dialogController.SetProgress(progress);
+                        }
+
+                    }, "RefreshProgressBar", () => dialogController.CloseAsync());
+                };
+
+                foldersearch.DirectoryFinished += RefreshProgress;
+
+                if (folders != null)
+                {
+                    directoryCount = folders.Length;
+                }
+
+                List<string> foldersWithError = new List<string>();
+
+                if (this.Model.SearchSubfolders)
+                {
+                    foreach (var folder in folders)
+                    {
+                        await SafeExecutor.ExecuteFn(() =>
+                            {
+                                directoryCount += System.IO.Directory
+                                    .GetDirectories(folder, "*", SearchOption.AllDirectories).Length;
+                            },
+                            "DirectorySearch",
+                            "Access denied (did you try to search in a harddrive?) or path too long. Try another directory.",
+                            () =>
+                            {
+                                foldersWithError.Add(folder);
+                                //foldersearch.DirectoryFinished -= RefreshProgress;
+                                //dialogController.CloseAsync();
+                            });
+                    }
+                }
+
+                //Sets the progressbars maximum
+                dialogController.Maximum = directoryCount;
 
                 foreach (var folder in folders)
                 {
-                    allFiles.AddRange(FolderSearch.GetFiles(folder, this.Model.SearchSubfolders).ToList());
+                    if (foldersWithError.Contains(folder))
+                    {
+                        continue;
+                    }
 
+                    allFiles.AddRange(foldersearch.GetFiles(folder, this.Model.SearchSubfolders, true).ToList());
                 }
 
                 extensions = allFiles.Select(x => Path.GetExtension(x)?.ToLower())
@@ -153,7 +226,7 @@ namespace FileOrganizer.Controller
 
             return new List<string>();
         }
-    
+
 
         private async Task<bool> CanDeleteExtension(Extension e)
         {
@@ -169,7 +242,7 @@ namespace FileOrganizer.Controller
         {
             var context = ContextManager.Context();
 
-            this.Model.LoadedExtensions.Remove(e);
+            this.Model.ShownExtensions.Remove(e);
 
             if (e.ExtensionId != 0)
             {

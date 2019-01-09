@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="FileOrganizer.View.Settings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FileOrganizer.View"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:converters="clr-namespace:Runtime.Converters;assembly=Runtime"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:String2BoolConverter x:Key="String2BoolConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <CheckBox IsChecked="{Binding Autostart.Value, Mode=OneWay ,Converter={StaticResource String2BoolConverter}}" Content="Start on Windows start" x:Name="AutostartCheckbox" x:FieldModifier="public"/>
+            <CheckBox Content="Filewatchers create subfolders with extension name/group name in destination folder" x:Name="SubfoldersCheckbox" x:FieldModifier="public"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
+

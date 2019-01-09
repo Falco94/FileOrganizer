@@ -77,12 +77,11 @@ namespace FileOrganizer.Controller
                 var folders = (string[]) dragEventArgs.Data.GetData(DataFormats.FileDrop);
                 var allFiles = new List<string>();
 
-
+                var foldersearch = new FolderSearch();
 
                 foreach (var folder in folders)
                 {
-                    allFiles.AddRange(FolderSearch.GetFiles(folder, this.Model.SearchSubfolders).ToList());
-
+                    allFiles.AddRange(foldersearch.GetFiles(folder, this.Model.SearchSubfolders, true).ToList());
                 }
 
                 extensions = allFiles.Select(x => Path.GetExtension(x).ToLower())

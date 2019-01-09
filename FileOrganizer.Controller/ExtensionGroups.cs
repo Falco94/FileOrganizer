@@ -34,6 +34,9 @@ namespace FileOrganizer.Controller
         public static RoutedCommand SaveGroups
             => FileOrganizer.View.ExtensionGroups.SaveGroupsCommand;
 
+        public static RoutedCommand DeleteExtension 
+            => FileOrganizer.View.ExtensionGroups.DeleteExtensionCommand;
+
         public DialogController DialogController { get; set; }
 
         public ExtensionGroups(BITS.UI.WPF.Core.Controllers.Controller parent,
@@ -66,10 +69,32 @@ namespace FileOrganizer.Controller
             this.BindAsync(AddNewAssignement, AddNewAssignementFn, CanAddNewAssignement);
             this.BindAsync<ExtensionGroup>(ChooseExtensions, ChooseExtensionsFn, CanChooseExtensions);
             this.BindAsync<ExtensionGroup>(DeleteAssignement, DeleteAssignementFn, CanDeleteAssignement);
+            this.BindAsync<Extension>(DeleteExtension, DeleteExtensionFn, CanDeleteExtensionFn);
 
             //führt die Can... Methoden aus
             CommandManager.InvalidateRequerySuggested();
+        }
 
+        private async Task<bool> CanDeleteExtensionFn(Extension arg)
+        {
+            return true;
+        }
+
+        private async Task DeleteExtensionFn(Extension arg)
+        {
+            SafeExecutor.ExecuteFn(() => InternalDeleteExtension(arg));
+        }
+
+        private void InternalDeleteExtension(Extension arg)
+        {
+            var group = ContextManager.Context().ExtensionGroups
+                .FirstOrDefault(x => x.ExtensionGroupId == arg.CurrentExtensionGroupId);
+
+            if (group != null)
+            {
+                group.Extensions.Remove(arg);
+                ContextManager.Context().SaveChanges();
+            }
         }
 
         private async Task<bool> CanDeleteAssignement(ExtensionGroup arg)
@@ -103,8 +128,8 @@ namespace FileOrganizer.Controller
 
             if (!canAdd)
             {
-                //TODO: Message, dass erst gespeichert werden muss
-                //await DialogExtension.ErrorDialogAsync(this, "Neu angelegte Gruppen müssen erst gespeichert werden!");
+                await DialogHandler.DialogRoot.ShowMessageAsync("Info",
+                    "New groups have to be saved before assigning extensions.");
                 return;
             }
 

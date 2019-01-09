@@ -11,11 +11,13 @@ namespace FileOrganizer.Model
 {
     public class Extensions : INotifyPropertyChanged
     {
-        private ObservableCollection<Extension> _loadedExtensions = new ObservableCollection<Extension>();
+        private IEnumerable<Extension> _loadedExtensions;
+        private ObservableCollection<Extension> _shownExtensions = new ObservableCollection<Extension>();
         private bool _isBusy;
         private bool _searchSubfolders;
+        private string _filter;
 
-        public ObservableCollection<Extension> LoadedExtensions
+        public IEnumerable<Extension> LoadedExtensions
         {
             get
             {
@@ -31,8 +33,11 @@ namespace FileOrganizer.Model
 
         public Extensions Init(IEnumerable<Extension> extensions)
         {
-            if(extensions != null)
-                LoadedExtensions = new ObservableCollection<Extension>(extensions.OrderBy(x => x.ExtensionName));
+            if (extensions != null)
+            {
+                LoadedExtensions = extensions.OrderBy(x => x.ExtensionName);
+                ShownExtensions = new ObservableCollection<Extension>(LoadedExtensions);
+            }
 
             return this;
         }
@@ -57,6 +62,40 @@ namespace FileOrganizer.Model
             set
             {
                 _searchSubfolders = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Filter
+        {
+            get { return _filter; }
+            set
+            {
+                _filter = value;
+
+                if (LoadedExtensions != null)
+                {
+                    if (string.IsNullOrWhiteSpace(_filter))
+                    {
+                        ShownExtensions = new ObservableCollection<Extension>(LoadedExtensions);
+                    }
+                    else
+                    {
+                        ShownExtensions = new ObservableCollection<Extension>(
+                            LoadedExtensions.Where(x => x.ExtensionName.ToLower().Contains(_filter.ToLower())));
+                    }
+                }
+
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Extension> ShownExtensions
+        {
+            get { return _shownExtensions; }
+            set
+            {
+                _shownExtensions = value;
                 OnPropertyChanged();
             }
         }

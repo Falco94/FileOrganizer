@@ -9,6 +9,7 @@ namespace FileOrganizer.View
         public static RoutedCommand DeleteAssignementCommand = new RoutedCommand(nameof(DeleteAssignementCommand), typeof(ExtensionGroups));
         public static RoutedCommand ChooseExtensionsCommand = new RoutedCommand(nameof(ChooseExtensionsCommand), typeof(ExtensionGroups));
         public static RoutedCommand SaveGroupsCommand = new RoutedCommand(nameof(SaveGroupsCommand), typeof(ExtensionGroups));
+        public static RoutedCommand DeleteExtensionCommand = new RoutedCommand(nameof(DeleteExtensionCommand), typeof(ExtensionGroups));
 
         public ExtensionGroups()
         {

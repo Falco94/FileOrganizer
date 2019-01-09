@@ -20,6 +20,7 @@ using System.Windows.Forms;
 using System.Windows.Media.Effects;
 using FileOrganizer.IService;
 using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Win32;
 using PayPal.Api;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -61,6 +62,7 @@ namespace FileOrganizer.Controller
             };
 
             DialogHandler.DialogRoot = this.View;
+            BusyHandler.IsBusy = this.Model.IsBusy;
 
             CreateNotificationArea();
 
@@ -108,6 +110,11 @@ namespace FileOrganizer.Controller
             this.View.Donate.Click += (s, e) =>
             {
                 DonateTabClick();
+            };
+
+            this.View.Settings.Click += (s, e) =>
+            {
+                SettingsTabClick();
             };
         }
 
@@ -157,8 +164,6 @@ namespace FileOrganizer.Controller
 
             }).ContinueWith(async antecedent =>
             {
-                this.Model.IsBusy = false;
-
                 await this.SwitchByAsync(region => region.MainContent,
                     new ExtensionMapping(this, extensionMappings, extensions, extensionGroups).Init(), (region, view) =>
                     {
@@ -166,6 +171,8 @@ namespace FileOrganizer.Controller
                         region.Children.Add(view);
                     },
                     (region, view) => region.Children.Clear());
+
+                this.Model.IsBusy = false;
 
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -182,8 +189,6 @@ namespace FileOrganizer.Controller
 
             }).ContinueWith(async antecedent =>
             {
-                this.Model.IsBusy = false;
-
                 await this.SwitchByAsync(region => region.MainContent,
                     new Extensions(this, DialogCoordinator.Instance, extensions, this).Init(), (region, view) =>
                     {
@@ -191,6 +196,8 @@ namespace FileOrganizer.Controller
                         region.Children.Add(view);
                     },
                     (region, view) => region.Children.Clear());
+
+                this.Model.IsBusy = false;
 
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -224,6 +231,22 @@ namespace FileOrganizer.Controller
             {
                 this.Model.IsBusy = false;
                 await this.SwitchByAsync(region => region.MainContent, new Controller.Filewatcher(this, filewatchers).Init());
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private void SettingsTabClick()
+        {
+            this.Model.IsBusy = true;
+
+            IEnumerable<Setting> settings = null;
+
+            Task.Run(() =>
+            {
+
+            }).ContinueWith(async antecedent =>
+            {
+                this.Model.IsBusy = false;
+                await this.SwitchByAsync(region => region.MainContent, new Controller.Settings(this).Init());
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
@@ -266,7 +289,17 @@ namespace FileOrganizer.Controller
         {
             var contextMenu = new System.Windows.Forms.ContextMenu();
 
-            var menuItem = new MenuItem("Exit");
+            var menuItem = new MenuItem("Open");
+            menuItem.Click += (s, e) =>
+            {
+                this.View.Show();
+                this.View.WindowState = WindowState.Normal;
+                this.View.Activate();
+            };
+
+            contextMenu.MenuItems.Add(menuItem);
+
+            menuItem = new MenuItem("Exit");
             menuItem.Click += (s, e) =>
             {
                 this.View.Show();
@@ -276,21 +309,11 @@ namespace FileOrganizer.Controller
 
             contextMenu.MenuItems.Add(menuItem);
 
-            menuItem = new MenuItem("Open");
-            menuItem.Click += (s, e) =>
-            {
-                this.View.Show();
-                this.View.WindowState = WindowState.Normal;
-            };
-
-            contextMenu.MenuItems.Add(menuItem);
-
             System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
 
             //Get version
-            System.Reflection.Assembly executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var fieVersionInfo = FileVersionInfo.GetVersionInfo(executingAssembly.Location);
-            var version = fieVersionInfo.FileVersion;
+            System.Reflection.Assembly entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
+            var version = entryAssembly.GetName().Version;
 
             ni.Text = "FileOrganizer " + version;
             ni.ContextMenu = contextMenu;
@@ -316,6 +339,7 @@ namespace FileOrganizer.Controller
                 {
                     this.View.Show();
                     this.View.WindowState = WindowState.Normal;
+                    this.View.Activate();
                 };
         }
 
@@ -381,15 +405,15 @@ namespace FileOrganizer.Controller
 
         private void Watcher_Renamed(object sender, RenamedEventArgs e)
         {
-            Watcher_Copy(Path.GetDirectoryName(e.FullPath));
+            Watcher_Copy(Path.GetDirectoryName(e.FullPath), (FileSystemWatcher) sender);
         }
 
         private void Watcher_Created(object sender, FileSystemEventArgs e)
         {
-            Watcher_Copy(Path.GetDirectoryName(e.FullPath));
+            Watcher_Copy(Path.GetDirectoryName(e.FullPath), (FileSystemWatcher)sender);
         }
 
-        private void Watcher_Copy(string directory)
+        private void Watcher_Copy(string directory, FileSystemWatcher watcher)
         {
             Dictionary<string, List<string>> sourceTargetDictionary = new Dictionary<string, List<string>>();
 
@@ -397,12 +421,26 @@ namespace FileOrganizer.Controller
 
             var files = Directory.GetFiles(directory);
 
+            //Subfolder Setting?
+            var subfolderSetting = ContextManager.Context().Settings.FirstOrDefault(x => x.Name == "Subfolders");
+            var createSubfolders = subfolderSetting?.Value == "-1";
+
             foreach (var file in files)
             {
-                var destinationPath = ExtensionMappingManager.LookUpExtensionMapping(Path.GetExtension(file));
-
-                if(String.IsNullOrWhiteSpace(destinationPath))
+                var fileExtension = Path.GetExtension(file);
+                var destinationPath = ExtensionMappingManager.LookUpExtensionMapping(fileExtension);
+                
+                if (String.IsNullOrWhiteSpace(destinationPath))
                     continue;
+
+                if (createSubfolders)
+                    destinationPath = Path.Combine(destinationPath, fileExtension.Remove(0, 1));
+
+                //Ordner erstellen, falls nicht vorhanden
+                if (!Directory.Exists(destinationPath))
+                {
+                    Directory.CreateDirectory(destinationPath);
+                }
 
                 if (sourceTargetDictionary.ContainsKey(destinationPath))
                 {
@@ -469,8 +507,7 @@ namespace FileOrganizer.Controller
             get { return _fileSystemWatchers; }
             set { _fileSystemWatchers = value; }
         }
-
-
+        
     }
 
     public interface IBusy

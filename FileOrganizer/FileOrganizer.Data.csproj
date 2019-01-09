@@ -136,6 +136,10 @@
     <Compile Include="Migrations\201804172127155_InitialCreate.Designer.cs">
       <DependentUpon>201804172127155_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808281257117_Settings.cs" />
+    <Compile Include="Migrations\201808281257117_Settings.Designer.cs">
+      <DependentUpon>201808281257117_Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Extension.cs" />
     <Compile Include="Models\ExtensionGroup.cs" />
@@ -143,6 +147,7 @@
     <Compile Include="Models\ExtensionSelectionItem.cs" />
     <Compile Include="Models\FileSystemWatcherDto.cs" />
     <Compile Include="Models\LogEntry.cs" />
+    <Compile Include="Models\Setting.cs" />
     <Compile Include="Test\TestPaths.cs" />
     <Compile Include="ViewModels\AddExtensionAssignementViewModel.cs" />
     <Compile Include="ViewModels\AddExtensionGroupViewModel.cs" />
@@ -191,6 +196,9 @@
     <Resource Include="Resources\Details-64.png" />
     <EmbeddedResource Include="Migrations\201804172127155_InitialCreate.resx">
       <DependentUpon>201804172127155_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808281257117_Settings.resx">
+      <DependentUpon>201808281257117_Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

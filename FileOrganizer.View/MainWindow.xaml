@@ -71,11 +71,20 @@
 
             <controls:Tile DockPanel.Dock="Left"
                            
+                           Title="Settings" 
+                           TiltFactor="1"
+                           HorizontalTitleAlignment="Center"
+                           Width="90" Height="100" 
+                           Count="7" x:Name="Settings" x:FieldModifier="public">
+            </controls:Tile>
+
+            <controls:Tile DockPanel.Dock="Left"
+                           
                            Title="Donate" 
                            TiltFactor="1"
                            HorizontalTitleAlignment="Center"
-                           Width="180" Height="100" 
-                           Count="7" x:Name="Donate" x:FieldModifier="public">
+                           Width="90" Height="100" 
+                           Count="8" x:Name="Donate" x:FieldModifier="public">
             </controls:Tile>
 
         </DockPanel>

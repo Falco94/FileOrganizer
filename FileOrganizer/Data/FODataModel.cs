@@ -29,6 +29,7 @@ namespace FileOrganizer.Data
         public virtual DbSet<Extension> Extensions { get; set; }
         public virtual DbSet<FileSystemWatcherDto> FileSystemWatchers { get; set; }
         public virtual DbSet<LogEntry> LogEntries { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
